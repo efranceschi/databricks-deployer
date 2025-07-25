@@ -1,0 +1,42 @@
+### General
+prefix = ""
+
+### Databricks
+databricks_account_id = ""
+databricks_client_secret = ""
+databricks_client_id = ""
+# workspace_name = ""
+# network_config_name = ""
+# private_access_setting_name = ""
+# pricing_tier = "PREMIUM"
+
+### Google
+google_project = ""
+google_region = ""
+google_service_account = ""
+
+### Network Names
+# google_vpc_name = ""
+# google_subnet_name = ""
+# google_subnet_pods_name = ""
+# google_subnet_svc_name = ""
+# google_router_name = ""
+# google_nat_name = ""
+
+### Network CIDRs
+# google_vpc_cidr = "10.0.0.0/16"
+# google_vpc_cidr_newbits = 8
+# google_subnet_ip_cidr = ""
+# google_pods_ip_cidr = ""
+# google_svc_ip_cidr = ""
+
+### Private Connect
+# enable_psc = false
+# enable_dataplane_relay_psc = false
+# enable_rest_api_psc = false
+# google_dataplane_relay_endpoint_vpc_name = ""
+# google_dataplane_relay_endpoint_psc_name = ""
+# google_dataplane_relay_endpoint_ip_name = ""
+# google_rest_api_endpoint_vpc_name = ""
+# google_rest_api_endpoint_psc_name = ""
+# google_rest_api_endpoint_ip_name = ""
