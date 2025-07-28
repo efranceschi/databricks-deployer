@@ -71,6 +71,12 @@ variable "google_vpc_name" {
   default     = null
 }
 
+variable "create_vpc" {
+  type        = bool
+  description = "Terraform should create the VPC"
+  default     = true
+}
+
 variable "google_subnet_name" {
   type        = string
   description = "Subnet name used for deployment"

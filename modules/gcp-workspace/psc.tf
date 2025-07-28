@@ -66,7 +66,7 @@ resource "google_compute_forwarding_rule" "dataplane_relay_psc_ep" {
   name       = local.final_google_dataplane_relay_endpoint_psc_name
   region     = var.google_region
   project    = var.google_project
-  network    = google_compute_network.dbx_private_vpc.id
+  network    = var.create_vpc ? google_compute_network.dbx_private_vpc[0].id : data.google_compute_network.existing_vpc[0].id
   ip_address = google_compute_address.dataplane_relay_endpoint_ip_address[0].id
   target     = local.final_google_relay_service_attachment
   # This field must be set to "" if the target is an URI of a service attachment. Default value is EXTERNAL
@@ -87,7 +87,7 @@ resource "google_compute_forwarding_rule" "rest_api_psc_ep" {
   name       = local.final_google_rest_api_endpoint_psc_name
   region     = var.google_region
   project    = var.google_project
-  network    = google_compute_network.dbx_private_vpc.id
+  network    = var.create_vpc ? google_compute_network.dbx_private_vpc[0].id : data.google_compute_network.existing_vpc[0].id
   ip_address = google_compute_address.rest_api_ip_address[0].id
   target     = local.final_google_rest_api_service_attachment
   #This field must be set to "" if the target is an URI of a service attachment. Default value is EXTERNAL
@@ -123,7 +123,7 @@ resource "databricks_mws_networks" "databricks_network" {
   network_name = local.final_network_config_name
   gcp_network_info {
     network_project_id = var.google_project
-    vpc_id             = google_compute_network.dbx_private_vpc.name
+    vpc_id             = var.create_vpc ? google_compute_network.dbx_private_vpc[0].name : data.google_compute_network.existing_vpc[0].name
     subnet_id          = google_compute_subnetwork.network-with-private-secondary-ip-ranges.name
     subnet_region      = google_compute_subnetwork.network-with-private-secondary-ip-ranges.region
   }

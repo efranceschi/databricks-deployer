@@ -19,6 +19,7 @@ module "demo01" {
   google_service_account = var.google_service_account
 
   ### Network Names
+  create_vpc              = var.create_vpc 
   google_vpc_name         = var.google_vpc_name
   google_subnet_name      = var.google_subnet_name
   google_subnet_pods_name = var.google_subnet_pods_name
