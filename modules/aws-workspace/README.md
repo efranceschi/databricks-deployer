@@ -58,7 +58,6 @@ This Terraform module deploys a Databricks workspace in AWS with the following c
 | databricks_client_id | Client ID for the service principal | `string` | n/a | yes |
 | databricks_client_secret | Client Secret for the service principal | `string` | n/a | yes |
 | aws_region | AWS Region | `string` | n/a | yes |
-
 | aws_role_arn | ARN of the role used for deployment | `string` | n/a | yes |
 | workspace_name | The Workspace name | `string` | `null` | no |
 | network_config_name | The network configuration name | `string` | `null` | no |
