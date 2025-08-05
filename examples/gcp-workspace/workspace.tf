@@ -1,4 +1,4 @@
-module "demo01" {
+module "databricks_gcp_workspace" {
   source = "../../modules/gcp-workspace"
 
   ### General
@@ -44,5 +44,65 @@ module "demo01" {
   google_rest_api_endpoint_vpc_name        = var.google_rest_api_endpoint_vpc_name
   google_rest_api_endpoint_psc_name        = var.google_rest_api_endpoint_psc_name
   google_rest_api_endpoint_ip_name         = var.google_rest_api_endpoint_ip_name
+}
 
+### Outputs
+
+# Workspace Outputs
+output "workspace_id" {
+  description = "The ID of the Databricks workspace"
+  value       = module.databricks_gcp_workspace.workspace_id
+}
+
+output "workspace_url" {
+  description = "The URL of the Databricks workspace"
+  value       = module.databricks_gcp_workspace.workspace_url
+}
+
+output "network_id" {
+  description = "The ID of the Databricks network configuration"
+  value       = module.databricks_gcp_workspace.network_id
+}
+
+output "private_access_settings_id" {
+  description = "The ID of the Databricks private access settings"
+  value       = module.databricks_gcp_workspace.private_access_settings_id
+}
+
+# VPC Outputs
+output "vpc_id" {
+  description = "The ID of the VPC"
+  value       = module.databricks_gcp_workspace.vpc_id
+}
+
+output "vpc_name" {
+  description = "The name of the VPC"
+  value       = module.databricks_gcp_workspace.vpc_name
+}
+
+# Subnet Outputs
+output "primary_subnet_id" {
+  description = "The ID of the primary subnet"
+  value       = module.databricks_gcp_workspace.primary_subnet_id
+}
+
+output "pods_subnet_id" {
+  description = "The ID of the pods subnet"
+  value       = module.databricks_gcp_workspace.pods_subnet_id
+}
+
+output "services_subnet_id" {
+  description = "The ID of the services subnet"
+  value       = module.databricks_gcp_workspace.services_subnet_id
+}
+
+# PSC Outputs
+output "dataplane_relay_psc_endpoint_id" {
+  description = "The ID of the dataplane relay PSC endpoint"
+  value       = module.databricks_gcp_workspace.dataplane_relay_psc_endpoint_id
+}
+
+output "rest_api_psc_endpoint_id" {
+  description = "The ID of the REST API PSC endpoint"
+  value       = module.databricks_gcp_workspace.rest_api_psc_endpoint_id
 }
