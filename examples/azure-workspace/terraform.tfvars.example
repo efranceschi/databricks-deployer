@@ -1,0 +1,46 @@
+### General
+prefix = "myproject"
+
+### Databricks
+databricks_account_id    = "00000000-0000-0000-0000-000000000000"
+databricks_client_id     = "00000000-0000-0000-0000-000000000000"
+databricks_client_secret = "your-client-secret"
+workspace_name           = "my-workspace"
+network_config_name      = "my-network-config"
+private_access_setting_name = "my-private-access"
+pricing_tier             = "premium"
+
+### Azure
+azure_subscription_id = "00000000-0000-0000-0000-000000000000"
+azure_resource_group  = "my-resource-group"
+azure_location        = "eastus2"
+azure_tenant_id       = "00000000-0000-0000-0000-000000000000"
+
+### Network Names
+# If create_vnet = true, these will be used to name the new resources
+# If create_vnet = false, these should be the names of existing resources
+azure_vnet_name           = "my-vnet"
+create_vnet               = true
+azure_subnet_public_name  = "public-subnet"
+azure_subnet_private_name = "private-subnet"
+azure_nsg_name            = "my-nsg"
+azure_route_table_name    = "my-route-table"
+azure_nat_gateway_name    = "my-nat-gateway"
+
+### Network CIDRs
+# Only used if create_vnet = true
+azure_vnet_cidr           = "10.0.0.0/16"
+azure_vnet_cidr_newbits   = 8
+# If null, these will be calculated automatically
+azure_subnet_public_cidr  = null
+azure_subnet_private_cidr = null
+
+### Private Link
+enable_private_link        = false
+azure_private_endpoint_name = "my-private-endpoint"
+
+### Tags
+tags = {
+  Environment = "Development"
+  Project     = "Databricks"
+}

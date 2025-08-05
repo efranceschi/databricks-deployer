@@ -1,0 +1,44 @@
+### General
+prefix = "myproject"
+
+### Databricks
+databricks_account_id    = "12345678-1234-1234-1234-123456789012"
+databricks_client_id     = "12345678-1234-1234-1234-123456789012"
+databricks_client_secret = "your-client-secret"
+workspace_name           = "myproject-workspace" # Optional, defaults to "${prefix}-workspace"
+pricing_tier             = "PREMIUM" # Optional, defaults to "PREMIUM"
+
+### AWS
+aws_region     = "us-west-2"
+aws_account_id = "123456789012"
+aws_role_arn   = "arn:aws:iam::123456789012:role/databricks-provisioning-role"
+
+### Network
+create_vpc = true # Set to false if you want to use existing VPC
+
+# If create_vpc = false, specify existing resources
+# aws_vpc_name = "existing-vpc"
+# aws_subnet_public_name_prefix = "existing-public-subnet"
+# aws_subnet_private_name_prefix = "existing-private-subnet"
+# aws_security_group_name = "existing-sg"
+
+### Network CIDRs
+aws_vpc_cidr = "10.0.0.0/16"
+aws_vpc_cidr_newbits = 8
+
+# Optional: Specify exact CIDRs for subnets
+# aws_subnet_public_cidrs = ["10.0.1.0/24", "10.0.2.0/24"]
+# aws_subnet_private_cidrs = ["10.0.3.0/24", "10.0.4.0/24"]
+
+### Private Link
+enable_private_link = false # Set to true to enable AWS PrivateLink
+
+### Tags
+tags = {
+  Environment = "dev"
+  Project     = "databricks"
+}
+
+### Availability Zones
+# Optional: Specify availability zones
+# availability_zones = ["us-west-2a", "us-west-2b"]

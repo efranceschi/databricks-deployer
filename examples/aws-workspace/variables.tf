@@ -1,0 +1,163 @@
+### General
+variable "prefix" {
+  type        = string
+  description = "Project prefix"
+  validation {
+    condition     = length(var.prefix) < 20
+    error_message = "Please, use a variable name with a maximum 20 charecters long"
+  }
+}
+
+### Databricks
+variable "databricks_account_id" {
+  type        = string
+  description = "Databricks Account ID"
+}
+
+variable "databricks_client_secret" {
+  type        = string
+  description = "Client Secret for the service principal"
+}
+
+variable "databricks_client_id" {
+  type        = string
+  description = "Client ID for the service principal"
+}
+
+variable "workspace_name" {
+  type        = string
+  description = "The Workspace name"
+  default     = null
+}
+
+variable "network_config_name" {
+  type        = string
+  description = "The network configuration name"
+  default     = null
+}
+
+variable "private_access_setting_name" {
+  type        = string
+  description = "The private access setting name"
+  default     = null
+}
+
+variable "pricing_tier" {
+  type        = string
+  description = "Pricing Tier"
+  default     = "PREMIUM"
+}
+
+### AWS
+variable "aws_region" {
+  type        = string
+  description = "AWS Region"
+}
+
+# aws_account_id variable removed as it's not needed
+
+variable "aws_role_arn" {
+  type        = string
+  description = "ARN of the role used for deployment"
+}
+
+### Network Names
+variable "create_vpc" {
+  type        = bool
+  description = "Terraform should create the VPC"
+  default     = true
+}
+
+variable "aws_vpc_name" {
+  type        = string
+  description = "VPC name used for deployment"
+  default     = null
+}
+
+variable "aws_subnet_public_name_prefix" {
+  type        = string
+  description = "Prefix for public subnet names"
+  default     = null
+}
+
+variable "aws_subnet_private_name_prefix" {
+  type        = string
+  description = "Prefix for private subnet names"
+  default     = null
+}
+
+variable "aws_security_group_name" {
+  type        = string
+  description = "Name of the security group to create"
+  default     = null
+}
+
+variable "aws_nat_gateway_name" {
+  type        = string
+  description = "Name of the NAT gateway"
+  default     = null
+}
+
+variable "aws_internet_gateway_name" {
+  type        = string
+  description = "Name of the internet gateway"
+  default     = null
+}
+
+### Network CIDRs
+variable "aws_vpc_cidr" {
+  type        = string
+  description = "IP Range for VPC"
+  default     = "10.0.0.0/16"
+}
+
+variable "aws_vpc_cidr_newbits" {
+  type        = number
+  description = "Number of new bits to automatically calculate the subnets mask"
+  default     = 8
+}
+
+variable "aws_subnet_public_cidrs" {
+  type        = list(string)
+  description = "IP Ranges for public subnets"
+  default     = null
+}
+
+variable "aws_subnet_private_cidrs" {
+  type        = list(string)
+  description = "IP Ranges for private subnets"
+  default     = null
+}
+
+### Private Link
+variable "enable_private_link" {
+  type        = bool
+  description = "Enable AWS PrivateLink for Databricks workspace?"
+  default     = false
+}
+
+variable "aws_relay_service_endpoint_name" {
+  type        = string
+  description = "Name of the relay service VPC endpoint"
+  default     = null
+}
+
+variable "aws_rest_api_endpoint_name" {
+  type        = string
+  description = "Name of the REST API VPC endpoint"
+  default     = null
+}
+
+### Tags
+variable "tags" {
+  type        = map(string)
+  description = "Tags to apply to resources"
+  default     = {}
+}
+
+### Availability Zones
+variable "availability_zones" {
+  type        = list(string)
+  description = "List of availability zones to deploy subnets in"
+  default     = null
+}
