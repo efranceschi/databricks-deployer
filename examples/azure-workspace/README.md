@@ -9,6 +9,74 @@ This example demonstrates how to deploy a Databricks workspace in Azure using th
 - Databricks account with admin privileges
 - Service Principal with appropriate permissions in Azure
 
+## Azure CLI Setup
+
+### Installation
+
+**macOS:**
+```bash
+brew install azure-cli
+```
+
+**Windows:**
+```powershell
+winget install Microsoft.AzureCLI
+```
+
+**Linux (Ubuntu/Debian):**
+```bash
+curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+```
+
+### Authentication
+
+1. **Login to Azure:**
+   ```bash
+   az login
+   ```
+   This will open a browser window for authentication.
+
+2. **Set your subscription (if you have multiple):**
+   ```bash
+   az account list --output table
+   az account set --subscription "your-subscription-id"
+   ```
+
+3. **Verify your current subscription:**
+   ```bash
+   az account show
+   ```
+
+### Service Principal Setup
+
+For automated deployments, create a Service Principal:
+
+1. **Create a Service Principal:**
+   ```bash
+   az ad sp create-for-rbac --name "databricks-terraform-sp" --role="Contributor" --scopes="/subscriptions/YOUR_SUBSCRIPTION_ID"
+   ```
+
+2. **Note the output values:**
+   - `appId` (Client ID)
+   - `password` (Client Secret)
+   - `tenant` (Tenant ID)
+
+3. **Set environment variables for Terraform:**
+   ```bash
+   export ARM_CLIENT_ID="your-client-id"
+   export ARM_CLIENT_SECRET="your-client-secret"
+   export ARM_SUBSCRIPTION_ID="your-subscription-id"
+   export ARM_TENANT_ID="your-tenant-id"
+   ```
+
+   Or add them to your `terraform.tfvars` file:
+   ```hcl
+   azure_client_id       = "your-client-id"
+   azure_client_secret   = "your-client-secret"
+   azure_subscription_id = "your-subscription-id"
+   azure_tenant_id       = "your-tenant-id"
+   ```
+
 ## Required Permissions
 
 The Azure Service Principal used for deployment needs the following roles:
