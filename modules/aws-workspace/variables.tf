@@ -45,7 +45,7 @@ variable "private_access_setting_name" {
 variable "pricing_tier" {
   type        = string
   description = "Pricing Tier"
-  default     = "PREMIUM"
+  default     = "ENTERPRISE"
 }
 
 ### AWS
@@ -54,11 +54,10 @@ variable "aws_region" {
   description = "AWS Region"
 }
 
-# aws_account_id variable removed as it's not needed
-
 variable "aws_role_arn" {
   type        = string
-  description = "ARN of the role used for deployment"
+  description = "ARN of the role used for deployment. If not provided, a new role will be created."
+  default     = null
 }
 
 ### Network Names
@@ -83,6 +82,12 @@ variable "aws_subnet_public_name_prefix" {
 variable "aws_subnet_private_name_prefix" {
   type        = string
   description = "Prefix for private subnet names"
+  default     = null
+}
+
+variable "aws_subnet_service_name_prefix" {
+  type        = string
+  description = "Prefix for service subnet names (used for VPC endpoints)"
   default     = null
 }
 
@@ -129,6 +134,12 @@ variable "aws_subnet_private_cidrs" {
   default     = null
 }
 
+variable "aws_subnet_service_cidrs" {
+  type        = list(string)
+  description = "IP Ranges for service subnets (used for VPC endpoints)"
+  default     = null
+}
+
 ### Private Link
 variable "enable_private_link" {
   type        = bool
@@ -159,5 +170,31 @@ variable "tags" {
 variable "availability_zones" {
   type        = list(string)
   description = "List of availability zones to deploy subnets in"
+  default     = null
+}
+
+### Storage
+variable "create_root_bucket" {
+  type        = bool
+  description = "Whether to create a new S3 bucket for Databricks root storage"
+  default     = true
+}
+
+variable "root_bucket_name" {
+  type        = string
+  description = "Name of the S3 bucket for Databricks root storage. If create_root_bucket is true, this will be used as the bucket name. If false, this should be an existing bucket name."
+  default     = null
+}
+
+variable "storage_configuration_name" {
+  type        = string
+  description = "Name for the Databricks storage configuration"
+  default     = null
+}
+
+### Metastore
+variable "metastore" {
+  type        = string
+  description = "Metastore name to assign to the workspace. If null, no metastore will be assigned."
   default     = null
 }
