@@ -23,11 +23,6 @@ output "azure_managed_resource_group_name" {
   description = "The name of the managed resource group for the Azure Databricks workspace"
 }
 
-output "databricks_network_id" {
-  value       = module.azure_workspace.databricks_network_id
-  description = "The ID of the Databricks network configuration"
-}
-
 output "databricks_private_access_settings_id" {
   value       = module.azure_workspace.databricks_private_access_settings_id
   description = "The ID of the Databricks private access settings"

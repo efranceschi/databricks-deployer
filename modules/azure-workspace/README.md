@@ -116,10 +116,9 @@ module "databricks_azure_workspace" {
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| azure_subscription_id | Azure Subscription ID | `string` | n/a | yes |
-| azure_resource_group | Azure Resource Group Name | `string` | n/a | yes |
+| create_resource_group | Whether to create a new resource group | `bool` | `false` | no |
+| azure_resource_group | Azure Resource Group Name (required if create_resource_group is false) | `string` | `null` | no |
 | azure_location | Azure Location | `string` | n/a | yes |
-| azure_tenant_id | Azure Tenant ID | `string` | n/a | yes |
 
 ### Network Names
 
@@ -161,40 +160,43 @@ module "databricks_azure_workspace" {
 
 | Name | Description |
 |------|-------------|
-| workspace_id | The ID of the Databricks workspace |
-| workspace_url | The URL of the Databricks workspace |
-| azure_workspace_id | The ID of the Azure Databricks workspace |
-| azure_workspace_url | The URL of the Azure Databricks workspace |
-| network_id | The ID of the Databricks network configuration |
-| private_access_settings_id | The ID of the Databricks private access settings |
+| databricks_workspace_id | The ID of the Databricks workspace |
+| databricks_workspace_url | The URL of the Databricks workspace |
+| azure_databricks_workspace_id | The ID of the Azure Databricks workspace |
+| azure_databricks_workspace_url | The URL of the Azure Databricks workspace |
+| azure_managed_resource_group_name | The name of the managed resource group for the Azure Databricks workspace |
+| azure_resource_group_name | The name of the resource group used for the Databricks workspace |
+| databricks_private_access_settings_id | The ID of the Databricks private access settings |
 
 ### VNet Outputs
 
 | Name | Description |
 |------|-------------|
-| vnet_id | The ID of the VNet |
-| vnet_name | The name of the VNet |
+| azure_vnet_id | The ID of the VNet |
+| azure_vnet_name | The name of the VNet |
 
 ### Subnet Outputs
 
 | Name | Description |
 |------|-------------|
-| public_subnet_id | The ID of the public subnet |
-| private_subnet_id | The ID of the private subnet |
+| azure_subnet_public_id | The ID of the public subnet |
+| azure_subnet_private_id | The ID of the private subnet |
 
 ### Private Link Outputs
 
 | Name | Description |
 |------|-------------|
-| private_endpoint_id | The ID of the private endpoint |
+| azure_private_endpoint_id | The ID of the private endpoint |
 
 ## Notes
 
-1. If `create_vnet` is set to `false`, the module will use an existing VNet with the name specified in `azure_vnet_name`.
-2. If `enable_private_link` is set to `true`, a Private Link endpoint will be created for secure connectivity to the Databricks workspace.
-3. The module automatically calculates subnet CIDRs if not explicitly provided, using the `azure_vnet_cidr` and `azure_vnet_cidr_newbits` variables.
-4. Resource names will be automatically generated using the `prefix` if specific names are not provided.
-5. The Azure Databricks workspace is created with the Azure resource (`azurerm_databricks_workspace`), with network configuration handled through custom_parameters. The `databricks_mws_private_access_settings` resource is used for private access settings.
+1. If `create_resource_group` is set to `true`, the module will create a new resource group using the `prefix`. If set to `false`, you must provide an existing resource group name in `azure_resource_group`.
+2. If `create_vnet` is set to `false`, the module will use an existing VNet with the name specified in `azure_vnet_name`.
+3. If `enable_private_link` is set to `true`, a Private Link endpoint will be created for secure connectivity to the Databricks workspace.
+4. The module automatically calculates subnet CIDRs if not explicitly provided, using the `azure_vnet_cidr` and `azure_vnet_cidr_newbits` variables.
+5. Resource names will be automatically generated using the `prefix` if specific names are not provided.
+6. The Azure Databricks workspace is created with the Azure resource (`azurerm_databricks_workspace`), with network configuration handled through custom_parameters. The `databricks_mws_private_access_settings` resource is used for private access settings.
+7. Azure authentication (subscription ID, tenant ID, client credentials) should be configured through the Azure provider configuration or environment variables rather than module variables.
 
 ## Requirements for the Azure Service Principal
 

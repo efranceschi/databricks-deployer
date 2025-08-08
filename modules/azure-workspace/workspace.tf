@@ -8,7 +8,7 @@ locals {
 ### Workspace
 resource "azurerm_databricks_workspace" "databricks_workspace" {
   name                        = local.final_workspace_name
-  resource_group_name         = data.azurerm_resource_group.this.name
+  resource_group_name         = local.resource_group_name
   location                    = var.azure_location
   sku                         = var.pricing_tier
   managed_resource_group_name = local.final_managed_resource_group_name

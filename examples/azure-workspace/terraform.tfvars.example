@@ -11,10 +11,9 @@ private_access_setting_name = "my-private-access"
 pricing_tier             = "premium"
 
 ### Azure
-azure_subscription_id = "00000000-0000-0000-0000-000000000000"
+create_resource_group = false
 azure_resource_group  = "my-resource-group"
 azure_location        = "eastus2"
-azure_tenant_id       = "00000000-0000-0000-0000-000000000000"
 
 ### Network Names
 # If create_vnet = true, these will be used to name the new resources

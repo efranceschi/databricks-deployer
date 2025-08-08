@@ -54,9 +54,16 @@ variable "azure_subscription_id" {
   description = "Azure Subscription ID"
 }
 
+variable "create_resource_group" {
+  type        = bool
+  description = "Whether to create a new resource group"
+  default     = false
+}
+
 variable "azure_resource_group" {
   type        = string
-  description = "Azure Resource Group Name"
+  description = "Azure Resource Group Name (required if create_resource_group is false)"
+  default     = null
 }
 
 variable "azure_location" {

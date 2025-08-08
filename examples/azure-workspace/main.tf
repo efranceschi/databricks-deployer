@@ -14,10 +14,9 @@ module "azure_workspace" {
   pricing_tier                 = var.pricing_tier
 
   # Azure
-  azure_subscription_id          = var.azure_subscription_id
+  create_resource_group          = var.create_resource_group
   azure_resource_group           = var.azure_resource_group
   azure_location                 = var.azure_location
-  azure_tenant_id                = var.azure_tenant_id
   azure_managed_resource_group_name = var.azure_managed_resource_group_name
 
   # Network Names

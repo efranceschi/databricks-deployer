@@ -24,6 +24,11 @@ output "azure_managed_resource_group_name" {
   value       = azurerm_databricks_workspace.databricks_workspace.managed_resource_group_name
 }
 
+output "azure_resource_group_name" {
+  description = "The name of the resource group used for the Databricks workspace"
+  value       = local.resource_group_name
+}
+
 # Note: databricks_network_id output removed as databricks_mws_networks is not used for Azure
 
 output "databricks_private_access_settings_id" {
