@@ -14,6 +14,7 @@ pricing_tier             = "premium"
 create_resource_group = false
 azure_resource_group  = "my-resource-group"
 azure_location        = "eastus2"
+azure_managed_resource_group_name = "my-managed-rg"
 
 ### Network Names
 # If create_vnet = true, these will be used to name the new resources

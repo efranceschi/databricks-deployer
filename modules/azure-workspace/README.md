@@ -57,6 +57,8 @@ This module creates a Databricks workspace in Azure with the following architect
 
 ## Usage
 
+### Basic Example - Create New Resources
+
 ```hcl
 module "databricks_azure_workspace" {
   source = "path/to/modules/azure-workspace"
@@ -72,22 +74,79 @@ module "databricks_azure_workspace" {
   pricing_tier             = "premium"
 
   # Azure
-  azure_subscription_id = "12345678-1234-1234-1234-123456789012"
-  azure_resource_group  = "my-resource-group"
+  create_resource_group = true
   azure_location        = "eastus"
-  azure_tenant_id       = "12345678-1234-1234-1234-123456789012"
 
-  # Network
-  create_vnet = true
+  # Network - Create new VNet
+  create_vnet     = true
   azure_vnet_cidr = "10.0.0.0/16"
-
-  # Private Link (optional)
-  enable_private_link = true
 
   # Tags
   tags = {
     Environment = "Development"
     Project     = "Databricks"
+  }
+}
+```
+
+### Example - Use Existing Resources
+
+```hcl
+module "databricks_azure_workspace" {
+  source = "path/to/modules/azure-workspace"
+
+  # General
+  prefix = "myproject"
+
+  # Databricks
+  databricks_account_id    = "12345678-1234-1234-1234-123456789012"
+  databricks_client_id     = "12345678-1234-1234-1234-123456789012"
+  databricks_client_secret = "your-client-secret"
+
+  # Azure - Use existing resource group
+  create_resource_group = false
+  azure_resource_group  = "existing-resource-group"
+  azure_location        = "eastus"
+
+  # Network - Use existing VNet
+  create_vnet                = false
+  azure_vnet_name           = "existing-vnet"
+  azure_subnet_public_name  = "existing-public-subnet"
+  azure_subnet_private_name = "existing-private-subnet"
+}
+```
+
+### Example - With Private Link
+
+```hcl
+module "databricks_azure_workspace" {
+  source = "path/to/modules/azure-workspace"
+
+  # General
+  prefix = "myproject"
+
+  # Databricks
+  databricks_account_id    = "12345678-1234-1234-1234-123456789012"
+  databricks_client_id     = "12345678-1234-1234-1234-123456789012"
+  databricks_client_secret = "your-client-secret"
+
+  # Azure
+  create_resource_group = true
+  azure_location        = "eastus"
+
+  # Network
+  create_vnet     = true
+  azure_vnet_cidr = "10.0.0.0/16"
+
+  # Private Link
+  enable_private_link         = true
+  azure_private_endpoint_name = "databricks-private-endpoint"
+
+  # Tags
+  tags = {
+    Environment = "Production"
+    Project     = "Databricks"
+    Security    = "Private"
   }
 }
 ```
@@ -110,7 +169,7 @@ module "databricks_azure_workspace" {
 | workspace_name | The Workspace name | `string` | `null` | no |
 | network_config_name | The network configuration name | `string` | `null` | no |
 | private_access_setting_name | The private access setting name | `string` | `null` | no |
-| pricing_tier | Pricing Tier | `string` | `"PREMIUM"` | no |
+| pricing_tier | Pricing Tier | `string` | `"premium"` | no |
 
 ### Azure
 
@@ -119,6 +178,7 @@ module "databricks_azure_workspace" {
 | create_resource_group | Whether to create a new resource group | `bool` | `false` | no |
 | azure_resource_group | Azure Resource Group Name (required if create_resource_group is false) | `string` | `null` | no |
 | azure_location | Azure Location | `string` | n/a | yes |
+| azure_managed_resource_group_name | The name of the resource group where Azure should place the managed Databricks resources | `string` | `null` | no |
 
 ### Network Names
 
