@@ -76,7 +76,7 @@ This Terraform module deploys a Databricks workspace in AWS with the following c
 | workspace_name | The Workspace name | `string` | `null` | no |
 | network_config_name | The network configuration name | `string` | `null` | no |
 | private_access_setting_name | The private access setting name | `string` | `null` | no |
-| pricing_tier | Pricing Tier | `string` | `"PREMIUM"` | no |
+| pricing_tier | Pricing Tier | `string` | `"ENTERPRISE"` | no |
 | create_vpc | Terraform should create the VPC | `bool` | `true` | no |
 | aws_vpc_name | VPC name used for deployment | `string` | `null` | no |
 | aws_subnet_public_name_prefix | Prefix for public subnet names | `string` | `null` | no |
@@ -127,7 +127,7 @@ module "databricks_workspace" {
   databricks_client_id     = "01234567-89ab-cdef-0123-456789abcdef"
   databricks_client_secret = "your-client-secret"
   workspace_name           = "my-workspace"
-  pricing_tier             = "PREMIUM"
+  pricing_tier             = "ENTERPRISE"
 
   ### AWS
   aws_region   = "us-west-2"
