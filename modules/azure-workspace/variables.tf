@@ -153,6 +153,12 @@ variable "azure_private_endpoint_name" {
   default     = null
 }
 
+variable "manage_private_access_settings" {
+  type        = bool
+  description = "Whether this module should manage Databricks Account-level Private Access Settings (requires Accounts OAuth)."
+  default     = false
+}
+
 ### Tags
 variable "tags" {
   type        = map(string)

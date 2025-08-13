@@ -38,6 +38,7 @@ azure_subnet_private_cidr = null
 ### Private Link
 enable_private_link        = false
 azure_private_endpoint_name = "my-private-endpoint"
+manage_private_access_settings = false
 
 ### Tags
 tags = {

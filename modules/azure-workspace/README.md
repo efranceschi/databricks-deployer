@@ -207,12 +207,37 @@ module "databricks_azure_workspace" {
 |------|-------------|------|---------|:--------:|
 | enable_private_link | Enable Azure Private Link for Databricks workspace? | `bool` | `false` | no |
 | azure_private_endpoint_name | Name of the private endpoint | `string` | `null` | no |
+| manage_private_access_settings | Whether this module should manage Databricks Account-level Private Access Settings (requires Accounts OAuth) | `bool` | `false` | no |
 
 ### Tags
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | tags | Tags to apply to resources | `map(string)` | `{}` | no |
+
+## Tags
+
+This module supports tagging of all created resources. You can specify tags using the `tags` variable:
+
+```hcl
+tags = {
+  Environment = "Production"
+  Project     = "Databricks"
+  Owner       = "DataTeam"
+  CostCenter  = "Engineering"
+}
+```
+
+Tags will be applied to:
+- Resource Group (if created)
+- Virtual Network
+- Subnets
+- Network Security Group
+- Route Table
+- NAT Gateway
+- Databricks Workspace
+- Private Endpoint (if enabled)
+- Private DNS Zone (if enabled)
 
 ## Outputs
 

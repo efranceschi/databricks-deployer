@@ -49,8 +49,9 @@ resource "azurerm_private_dns_zone_virtual_network_link" "databricks_dns_link" {
 
 ### Databricks Private Access Setting
 resource "databricks_mws_private_access_settings" "private_access_setting" {
+  count                        = var.manage_private_access_settings ? 1 : 0
   private_access_settings_name = local.final_private_access_setting_name
   region                       = var.azure_location
   public_access_enabled        = true
-  private_access_level         = var.enable_private_link ? "ACCOUNT_CONSOLE" : "ENDPOINT"
+  private_access_level         = var.enable_private_link ? "ACCOUNT" : "ENDPOINT"
 }

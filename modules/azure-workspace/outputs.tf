@@ -33,7 +33,7 @@ output "azure_resource_group_name" {
 
 output "databricks_private_access_settings_id" {
   description = "The ID of the Databricks private access settings"
-  value       = databricks_mws_private_access_settings.private_access_setting.private_access_settings_id
+  value       = var.manage_private_access_settings ? databricks_mws_private_access_settings.private_access_setting[0].private_access_settings_id : null
 }
 
 ### VNet Outputs
