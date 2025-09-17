@@ -152,9 +152,12 @@ resource "databricks_mws_networks" "databricks_network" {
   security_group_ids = [                                                                            # Security group IDs
     var.create_vpc ? aws_security_group.databricks_sg[0].id : data.aws_security_group.existing_sg[0].id
   ]
-  vpc_endpoints {
-    dataplane_relay = var.enable_private_link ? [databricks_mws_vpc_endpoint.relay_service[0].vpc_endpoint_id] : [] # Relay service endpoint
-    rest_api        = var.enable_private_link ? [databricks_mws_vpc_endpoint.rest_api[0].vpc_endpoint_id] : []      # REST API endpoint
+  dynamic "vpc_endpoints" {
+    for_each = var.enable_private_link ? [1] : []
+    content {
+      dataplane_relay = [databricks_mws_vpc_endpoint.relay_service[0].vpc_endpoint_id] # Relay service endpoint
+      rest_api        = [databricks_mws_vpc_endpoint.rest_api[0].vpc_endpoint_id]      # REST API endpoint
+    }
   }
 }
 
