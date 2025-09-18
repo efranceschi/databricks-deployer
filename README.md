@@ -38,11 +38,16 @@ databricks-deployer/
 │   ├── azure-workspace/       # Azure Databricks workspace module
 │   ├── gcp-workspace/         # GCP Databricks workspace module
 │   └── gcp-sa-provisioning/   # GCP service account provisioning
-└── examples/                  # Example implementations
-    ├── aws-workspace/         # AWS workspace deployment example
-    ├── azure-workspace/       # Azure workspace deployment example
-    ├── gcp-workspace/         # GCP workspace deployment example
-    └── gcp-sa-provisioning/   # GCP service account example
+├── examples/                  # Example implementations
+│   ├── aws-workspace/         # AWS workspace deployment example
+│   ├── azure-workspace/       # Azure workspace deployment example
+│   ├── gcp-workspace/         # GCP workspace deployment example
+│   └── gcp-sa-provisioning/   # GCP service account example
+└── tools/                     # Installation and utility scripts
+    ├── install-terraform-windows.ps1  # Terraform installer for Windows
+    ├── install-awscli-windows.ps1     # AWS CLI installer for Windows
+    ├── install-azurecli-windows.ps1   # Azure CLI installer for Windows
+    └── install-gcp-cli-windows.ps1    # Google Cloud CLI installer for Windows
 ```
 
 ## 🚀 Quick Start
@@ -56,6 +61,205 @@ databricks-deployer/
   - gcloud CLI (for GCP deployments)
 - Databricks account with appropriate permissions
 - Cloud provider account with sufficient permissions
+
+## 🛠️ Installation Scripts
+
+This project includes PowerShell scripts for Windows users to automatically download and install the required CLI tools. These scripts provide a convenient way to set up your development environment.
+
+### Available Scripts
+
+| Script | Tool | Description |
+|--------|------|-------------|
+| `tools/install-terraform-windows.ps1` | Terraform | Infrastructure as Code tool |
+| `tools/install-awscli-windows.ps1` | AWS CLI v2 | AWS command-line interface |
+| `tools/install-azurecli-windows.ps1` | Azure CLI | Azure command-line interface |
+| `tools/install-gcp-cli-windows.ps1` | Google Cloud CLI | Google Cloud command-line interface |
+
+### Usage
+
+#### Basic Installation (Recommended)
+
+```powershell
+# Install Terraform
+.\tools\install-terraform-windows.ps1
+
+# Install AWS CLI
+.\tools\install-awscli-windows.ps1
+
+# Install Azure CLI
+.\tools\install-azurecli-windows.ps1
+
+# Install Google Cloud CLI
+.\tools\install-gcp-cli-windows.ps1
+```
+
+#### Advanced Usage
+
+##### Terraform Installation Options
+
+```powershell
+# Install to custom directory
+.\tools\install-terraform-windows.ps1 -InstallPath "C:\Tools\Terraform"
+
+# Install specific version
+.\tools\install-terraform-windows.ps1 -Version "1.5.0"
+
+# Install without adding to PATH
+.\tools\install-terraform-windows.ps1 -AddToPath:$false
+
+# Combined options
+.\tools\install-terraform-windows.ps1 -InstallPath "C:\Tools\Terraform" -Version "1.6.0"
+```
+
+##### Cloud CLI Installation Options
+
+```powershell
+# Silent installation (no user prompts)
+.\tools\install-awscli-windows.ps1 -Silent
+.\tools\install-azurecli-windows.ps1 -Silent
+.\tools\install-gcp-cli-windows.ps1 -Silent
+
+# Skip installation verification
+.\tools\install-awscli-windows.ps1 -SkipVerification
+.\tools\install-azurecli-windows.ps1 -SkipVerification
+.\tools\install-gcp-cli-windows.ps1 -SkipVerification
+
+# Combined options for unattended installation
+.\tools\install-awscli-windows.ps1 -Silent -SkipVerification
+```
+
+### Script Parameters
+
+#### Common Parameters (All CLI Scripts)
+
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+| `-Silent` | Switch | `$false` | Run installation without user prompts |
+| `-SkipVerification` | Switch | `$false` | Skip post-installation verification |
+| `-Version` | String | `"latest"` | Install specific version (limited support) |
+
+#### Terraform-Specific Parameters
+
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+| `-InstallPath` | String | `$env:LOCALAPPDATA\Terraform` | Installation directory |
+| `-AddToPath` | Switch | `$true` | Add to user PATH environment variable |
+| `-Version` | String | `"latest"` | Terraform version to install |
+
+### Features
+
+#### All Installation Scripts Include:
+
+- ✅ **Automatic Downloads**: Download latest versions from official sources
+- ✅ **Architecture Detection**: Automatically detect 32-bit vs 64-bit systems
+- ✅ **Existing Installation Check**: Detect and handle existing installations
+- ✅ **Progress Indicators**: Visual feedback during download and installation
+- ✅ **Error Handling**: Comprehensive error handling with helpful messages
+- ✅ **PATH Management**: Automatic PATH environment variable updates
+- ✅ **Installation Verification**: Post-installation testing and validation
+- ✅ **Colored Output**: Enhanced readability with color-coded messages
+- ✅ **Cleanup**: Automatic removal of temporary installation files
+
+#### Tool-Specific Features:
+
+**Terraform Script**:
+- Downloads from HashiCorp releases with version selection
+- Zip file extraction to custom directories
+- GitHub API integration for latest version detection
+- Portable installation (no administrator rights required by default)
+
+**AWS CLI Script**:
+- MSI installer with UAC elevation handling
+- 64-bit requirement detection
+- Comprehensive MSI error code handling
+- Post-installation configuration guidance
+
+**Azure CLI Script**:
+- Microsoft's official installer with redirect URL handling
+- Cross-architecture support (32-bit and 64-bit)
+- MSI installer with progress display options
+- Integration guidance for Azure authentication
+
+**Google Cloud CLI Script**:
+- Universal installer with automatic architecture detection
+- Interactive and silent installation modes
+- Component management guidance
+- Comprehensive setup instructions for GCP projects
+
+### Prerequisites for Installation Scripts
+
+- **PowerShell**: Windows PowerShell 5.1 or PowerShell Core 7.x
+- **Internet Connection**: Required to download installers
+- **Execution Policy**: May need to allow script execution:
+  ```powershell
+  Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+  ```
+
+### Post-Installation Configuration
+
+After running the installation scripts, you'll need to configure each tool:
+
+#### Terraform
+```bash
+terraform --version  # Verify installation
+```
+
+#### AWS CLI
+```bash
+aws --version        # Verify installation
+aws configure        # Configure credentials
+```
+
+#### Azure CLI
+```bash
+az --version         # Verify installation
+az login            # Authenticate with Azure
+az account list     # List available subscriptions
+```
+
+#### Google Cloud CLI
+```bash
+gcloud --version    # Verify installation
+gcloud init         # Initialize and authenticate
+gcloud auth login   # Authenticate with Google Cloud
+```
+
+### Troubleshooting
+
+#### Common Issues
+
+1. **PowerShell Execution Policy**:
+   ```powershell
+   # If you get execution policy errors:
+   Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+   ```
+
+2. **PATH Not Updated**:
+   ```powershell
+   # Refresh environment variables in current session:
+   $env:Path = [System.Environment]::GetEnvironmentVariable("Path", "User") + ";" + [System.Environment]::GetEnvironmentVariable("Path", "Machine")
+   
+   # Or restart your PowerShell/Command Prompt session
+   ```
+
+3. **Administrator Privileges**:
+   - CLI installers may prompt for elevation (this is normal)
+   - For Terraform, use default user directory to avoid admin requirements
+
+4. **Download Issues**:
+   - Ensure internet connectivity
+   - Check if corporate firewall is blocking downloads
+   - Verify TLS 1.2 support in your environment
+
+#### Getting Help
+
+Each script provides built-in help and detailed error messages. For additional help:
+
+```powershell
+# View script parameters
+Get-Help .\tools\install-terraform-windows.ps1 -Detailed
+Get-Help .\tools\install-awscli-windows.ps1 -Detailed
+```
 
 ### Basic Usage
 
