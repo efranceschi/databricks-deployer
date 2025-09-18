@@ -12,7 +12,71 @@ In this template, we create a [Service Account](https://cloud.google.com/iam/doc
 
 - The built-in roles of Kubernetes Admin and Compute Storage Admin needs to be available
 
+- Google Cloud CLI (gcloud) installed and configured
+
 - you need to run `gcloud auth application-default login` and login with your google account
+
+## Google Cloud CLI Setup
+
+### Installation
+
+**macOS:**
+```bash
+# Using Homebrew
+brew install google-cloud-sdk
+
+# Or download the installer
+curl https://sdk.cloud.google.com | bash
+```
+
+**Windows:**
+```powershell
+# Download and run the installer from:
+# https://cloud.google.com/sdk/docs/install-sdk#windows
+
+# Or using Chocolatey
+choco install gcloudsdk
+```
+
+**Linux:**
+```bash
+# Add the Cloud SDK distribution URI as a package source
+echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main" | sudo tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
+
+# Import the Google Cloud public key
+curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key --keyring /usr/share/keyrings/cloud.google.gpg add -
+
+# Update and install the Cloud SDK
+sudo apt-get update && sudo apt-get install google-cloud-cli
+```
+
+### Initial Configuration
+
+1. **Initialize gcloud:**
+   ```bash
+   gcloud init
+   ```
+   This will guide you through:
+   - Logging into your Google account
+   - Selecting a project
+   - Setting a default compute region/zone
+
+2. **Set your project (if not done during init):**
+   ```bash
+   gcloud config set project YOUR_PROJECT_ID
+   ```
+
+3. **Enable required APIs:**
+   ```bash
+   gcloud services enable iam.googleapis.com
+   gcloud services enable cloudresourcemanager.googleapis.com
+   ```
+
+4. **Authenticate for application default credentials:**
+   ```bash
+   gcloud auth application-default login
+   ```
+   This sets up credentials that Terraform can use automatically.
 
 ## Run as an SA 
 

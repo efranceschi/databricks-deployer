@@ -19,6 +19,105 @@ This example demonstrates how to deploy a Databricks workspace in Google Cloud P
   - Service Account User (`roles/iam.serviceAccountUser`)
   - Project IAM Admin (`roles/resourcemanager.projectIamAdmin`)
 - Terraform installed on your local machine
+- Google Cloud CLI (gcloud) installed and configured
+
+## Google Cloud CLI Setup
+
+### Installation
+
+**macOS:**
+```bash
+# Using Homebrew
+brew install google-cloud-sdk
+
+# Or download the installer
+curl https://sdk.cloud.google.com | bash
+```
+
+**Windows:**
+```powershell
+# Download and run the installer from:
+# https://cloud.google.com/sdk/docs/install-sdk#windows
+
+# Or using Chocolatey
+choco install gcloudsdk
+```
+
+**Linux:**
+```bash
+# Add the Cloud SDK distribution URI as a package source
+echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main" | sudo tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
+
+# Import the Google Cloud public key
+curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key --keyring /usr/share/keyrings/cloud.google.gpg add -
+
+# Update and install the Cloud SDK
+sudo apt-get update && sudo apt-get install google-cloud-cli
+```
+
+### Initial Configuration
+
+1. **Initialize gcloud:**
+   ```bash
+   gcloud init
+   ```
+   This will guide you through:
+   - Logging into your Google account
+   - Selecting a project
+   - Setting a default compute region/zone
+
+2. **Set your project (if not done during init):**
+   ```bash
+   gcloud config set project YOUR_PROJECT_ID
+   ```
+
+3. **Enable required APIs:**
+   ```bash
+   gcloud services enable compute.googleapis.com
+   gcloud services enable container.googleapis.com
+   gcloud services enable iam.googleapis.com
+   gcloud services enable cloudresourcemanager.googleapis.com
+   ```
+
+### Service Account Setup
+
+1. **Create a service account:**
+   ```bash
+   gcloud iam service-accounts create databricks-terraform-sa \
+       --description="Service account for Databricks Terraform deployment" \
+       --display-name="Databricks Terraform SA"
+   ```
+
+2. **Grant required roles:**
+   ```bash
+   PROJECT_ID=$(gcloud config get-value project)
+   SA_EMAIL="databricks-terraform-sa@${PROJECT_ID}.iam.gserviceaccount.com"
+   
+   gcloud projects add-iam-policy-binding $PROJECT_ID \
+       --member="serviceAccount:${SA_EMAIL}" \
+       --role="roles/compute.admin"
+   
+   gcloud projects add-iam-policy-binding $PROJECT_ID \
+       --member="serviceAccount:${SA_EMAIL}" \
+       --role="roles/container.admin"
+   
+   gcloud projects add-iam-policy-binding $PROJECT_ID \
+       --member="serviceAccount:${SA_EMAIL}" \
+       --role="roles/iam.serviceAccountUser"
+   
+   gcloud projects add-iam-policy-binding $PROJECT_ID \
+       --member="serviceAccount:${SA_EMAIL}" \
+       --role="roles/resourcemanager.projectIamAdmin"
+   ```
+
+3. **Grant impersonation permissions to your user:**
+   ```bash
+   USER_EMAIL=$(gcloud config get-value account)
+   
+   gcloud iam service-accounts add-iam-policy-binding $SA_EMAIL \
+       --member="user:${USER_EMAIL}" \
+       --role="roles/iam.serviceAccountTokenCreator"
+   ```
 
 ## Authentication
 
