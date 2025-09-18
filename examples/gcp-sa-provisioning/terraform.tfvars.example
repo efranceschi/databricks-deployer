@@ -1,4 +1,4 @@
 prefix         = "terraform"
 google_project = "my-project"
-google_region  = "us-central1"
+region  = "us-central1"
 delegate_from  = ["user:your.email@gmail.com"]

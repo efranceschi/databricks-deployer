@@ -30,7 +30,7 @@ locals {
     us-west1                = "projects/prod-gcp-us-west1/regions/us-west1/serviceAttachments/ngrok-psc-endpoint"
     us-west4                = "projects/prod-gcp-us-west4/regions/us-west4/serviceAttachments/ngrok-psc-endpoint"
   }
-  final_google_relay_service_attachment = local.scc_relay_by_region[var.google_region]
+  final_google_relay_service_attachment = local.scc_relay_by_region[var.region]
 
   # See https://docs.databricks.com/gcp/en/resources/ip-domain-region#private-service-connect-psc-attachment-uris-and-project-numbers
   workspace_psc_by_region = {
@@ -48,7 +48,7 @@ locals {
     us-west1                = "projects/general-prod-uswest1-01/regions/us-west1/serviceAttachments/plproxy-psc-endpoint-all-ports"
     us-west4                = "projects/general-prod-uswest4-01/regions/us-west4/serviceAttachments/plproxy-psc-endpoint-all-ports"
   }
-  final_google_rest_api_service_attachment = local.workspace_psc_by_region[var.google_region]
+  final_google_rest_api_service_attachment = local.workspace_psc_by_region[var.region]
 }
 
 ### Create GCP Endpoints
@@ -56,7 +56,7 @@ resource "google_compute_address" "dataplane_relay_endpoint_ip_address" {
   count        = local.final_enable_dataplane_relay_psc ? 1 : 0
   name         = local.final_google_dataplane_relay_endpoint_ip_name
   project      = var.google_project
-  region       = var.google_region
+  region       = var.region
   subnetwork   = google_compute_subnetwork.backend_svc_subnetwork.id
   address_type = "INTERNAL"
 }
@@ -64,7 +64,7 @@ resource "google_compute_address" "dataplane_relay_endpoint_ip_address" {
 resource "google_compute_forwarding_rule" "dataplane_relay_psc_ep" {
   count      = local.final_enable_dataplane_relay_psc ? 1 : 0
   name       = local.final_google_dataplane_relay_endpoint_psc_name
-  region     = var.google_region
+  region     = var.region
   project    = var.google_project
   network    = var.create_vpc ? google_compute_network.dbx_private_vpc[0].id : data.google_compute_network.existing_vpc[0].id
   ip_address = google_compute_address.dataplane_relay_endpoint_ip_address[0].id
@@ -77,7 +77,7 @@ resource "google_compute_address" "rest_api_ip_address" {
   count        = local.final_enable_rest_api_psc ? 1 : 0
   name         = local.final_google_rest_api_endpoint_ip_name
   project      = var.google_project
-  region       = var.google_region
+  region       = var.region
   subnetwork   = google_compute_subnetwork.backend_svc_subnetwork.id
   address_type = "INTERNAL"
 }
@@ -85,7 +85,7 @@ resource "google_compute_address" "rest_api_ip_address" {
 resource "google_compute_forwarding_rule" "rest_api_psc_ep" {
   count      = local.final_enable_rest_api_psc ? 1 : 0
   name       = local.final_google_rest_api_endpoint_psc_name
-  region     = var.google_region
+  region     = var.region
   project    = var.google_project
   network    = var.create_vpc ? google_compute_network.dbx_private_vpc[0].id : data.google_compute_network.existing_vpc[0].id
   ip_address = google_compute_address.rest_api_ip_address[0].id
@@ -136,6 +136,6 @@ resource "databricks_mws_networks" "databricks_network" {
 ### Databricks Private Access Setting
 resource "databricks_mws_private_access_settings" "private_access_setting" {
   private_access_settings_name = local.final_private_access_setting_name
-  region                       = var.google_region
+  region                       = var.region
   public_access_enabled        = true
 }

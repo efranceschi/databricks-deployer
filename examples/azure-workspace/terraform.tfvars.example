@@ -13,7 +13,7 @@ pricing_tier             = "premium"
 ### Azure
 create_resource_group = false
 azure_resource_group  = "my-resource-group"
-azure_location        = "eastus2"
+region        = "eastus2"
 azure_managed_resource_group_name = "my-managed-rg"
 
 ### Network Names

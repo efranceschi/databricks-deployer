@@ -15,7 +15,7 @@ module "databricks_gcp_workspace" {
 
   ### Google
   google_project         = var.google_project
-  google_region          = var.google_region
+  region          = var.region
   google_service_account = var.google_service_account
 
   ### Network Names

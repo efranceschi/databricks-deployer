@@ -71,7 +71,7 @@ This Terraform module deploys a Databricks workspace in AWS with the following c
 | databricks_account_id | Databricks Account ID | `string` | n/a | yes |
 | databricks_client_id | Client ID for the service principal | `string` | n/a | yes |
 | databricks_client_secret | Client Secret for the service principal | `string` | n/a | yes |
-| aws_region | AWS Region | `string` | n/a | yes |
+| region | AWS Region | `string` | n/a | yes |
 | aws_role_arn | ARN of the role used for deployment. If not provided, a new role will be created | `string` | `null` | no |
 | workspace_name | The Workspace name | `string` | `null` | no |
 | network_config_name | The network configuration name | `string` | `null` | no |
@@ -130,7 +130,7 @@ module "databricks_workspace" {
   pricing_tier             = "ENTERPRISE"
 
   ### AWS
-  aws_region   = "us-west-2"
+  region   = "us-west-2"
   # aws_role_arn = "arn:aws:iam::123456789012:role/databricks-role"  # Optional: If not provided, a new role will be created
 
   ### Network

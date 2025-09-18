@@ -11,7 +11,7 @@ resource "azurerm_private_endpoint" "databricks_endpoint" {
   count               = var.enable_private_link ? 1 : 0
   name                = local.final_azure_private_endpoint_name
   resource_group_name = local.resource_group_name
-  location            = var.azure_location
+  location            = var.region
   subnet_id           = var.create_vnet ? azurerm_subnet.private[0].id : data.azurerm_subnet.existing_private[0].id
   tags                = var.tags
 
@@ -51,7 +51,7 @@ resource "azurerm_private_dns_zone_virtual_network_link" "databricks_dns_link" {
 resource "databricks_mws_private_access_settings" "private_access_setting" {
   count                        = var.manage_private_access_settings ? 1 : 0
   private_access_settings_name = local.final_private_access_setting_name
-  region                       = var.azure_location
+  region                       = var.region
   public_access_enabled        = true
   private_access_level         = var.enable_private_link ? "ACCOUNT" : "ENDPOINT"
 }

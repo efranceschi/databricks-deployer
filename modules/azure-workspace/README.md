@@ -75,7 +75,7 @@ module "databricks_azure_workspace" {
 
   # Azure
   create_resource_group = true
-  azure_location        = "eastus"
+  region        = "eastus"
 
   # Network - Create new VNet
   create_vnet     = true
@@ -106,7 +106,7 @@ module "databricks_azure_workspace" {
   # Azure - Use existing resource group
   create_resource_group = false
   azure_resource_group  = "existing-resource-group"
-  azure_location        = "eastus"
+  region        = "eastus"
 
   # Network - Use existing VNet
   create_vnet                = false
@@ -132,7 +132,7 @@ module "databricks_azure_workspace" {
 
   # Azure
   create_resource_group = true
-  azure_location        = "eastus"
+  region        = "eastus"
 
   # Network
   create_vnet     = true
@@ -177,7 +177,7 @@ module "databricks_azure_workspace" {
 |------|-------------|------|---------|:--------:|
 | create_resource_group | Whether to create a new resource group | `bool` | `false` | no |
 | azure_resource_group | Azure Resource Group Name (required if create_resource_group is false) | `string` | `null` | no |
-| azure_location | Azure Location | `string` | n/a | yes |
+| region | Azure Location | `string` | n/a | yes |
 | azure_managed_resource_group_name | The name of the resource group where Azure should place the managed Databricks resources | `string` | `null` | no |
 
 ### Network Names

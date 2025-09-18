@@ -127,7 +127,7 @@ The AWS provider will automatically use your configured credentials. You can als
 ```hcl
 # In your terraform configuration
 provider "aws" {
-  region = var.aws_region
+  region = var.region
   # profile = "databricks-dev"  # Optional: specify profile
 }
 ```
@@ -234,7 +234,7 @@ This example supports various configuration options through variables:
 - `pricing_tier`: Pricing tier for the workspace (default: PREMIUM)
 
 ### AWS
-- `aws_region`: AWS region for deployment
+- `region`: AWS region for deployment
 
 ### Network
 - `create_vpc`: Whether to create a new VPC (default: true)

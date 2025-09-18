@@ -144,7 +144,7 @@ databricks_client_secret = "your-client-secret"
 
 # Google
 google_project = "my-gcp-project"
-google_region = "us-central1"
+region = "us-central1"
 google_service_account = "sa-name@my-gcp-project.iam.gserviceaccount.com"
 
 # Optional: Enable Private Service Connect

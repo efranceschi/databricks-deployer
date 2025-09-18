@@ -14,7 +14,7 @@ module "aws_workspace" {
   pricing_tier                = var.pricing_tier
 
   # AWS
-  aws_region   = var.aws_region
+  region   = var.region
   aws_role_arn = var.aws_role_arn
 
   # Network

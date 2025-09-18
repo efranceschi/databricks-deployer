@@ -66,7 +66,7 @@ variable "azure_resource_group" {
   default     = null
 }
 
-variable "azure_location" {
+variable "region" {
   type        = string
   description = "Azure Location"
 }

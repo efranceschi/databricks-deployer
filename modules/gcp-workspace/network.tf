@@ -32,7 +32,7 @@ data "google_compute_network" "existing_vpc" {
 resource "google_compute_subnetwork" "network-with-private-secondary-ip-ranges" {
   name                     = local.final_google_subnet_name
   ip_cidr_range            = local.final_google_subnet_ip_cidr
-  region                   = var.google_region
+  region                   = var.region
   network                  = var.create_vpc ? google_compute_network.dbx_private_vpc[0].id : data.google_compute_network.existing_vpc[0].id
   private_ip_google_access = true
 }
@@ -40,7 +40,7 @@ resource "google_compute_subnetwork" "network-with-private-secondary-ip-ranges" 
 resource "google_compute_subnetwork" "backend_svc_subnetwork" {
   name                     = local.final_google_subnet_svc_name
   ip_cidr_range            = local.final_google_svc_ip_cidr
-  region                   = var.google_region
+  region                   = var.region
   network                  = var.create_vpc ? google_compute_network.dbx_private_vpc[0].id : data.google_compute_network.existing_vpc[0].id
   private_ip_google_access = true
 }
@@ -48,7 +48,7 @@ resource "google_compute_subnetwork" "backend_svc_subnetwork" {
 resource "google_compute_subnetwork" "backend_pods_subnetwork" {
   name                     = local.final_google_subnet_pods_name
   ip_cidr_range            = local.final_google_pods_ip_cidr
-  region                   = var.google_region
+  region                   = var.region
   network                  = var.create_vpc ? google_compute_network.dbx_private_vpc[0].id : data.google_compute_network.existing_vpc[0].id
   private_ip_google_access = true
 }

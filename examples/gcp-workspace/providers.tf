@@ -11,7 +11,7 @@ terraform {
 
 provider "google" {
   project                     = var.google_project
-  region                      = var.google_region
+  region                      = var.region
   impersonate_service_account = var.google_service_account
 }
 
