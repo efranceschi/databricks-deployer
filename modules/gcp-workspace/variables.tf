@@ -54,7 +54,7 @@ variable "google_project" {
   description = "Google Project Name"
 }
 
-variable "google_region" {
+variable "region" {
   type        = string
   description = "Google Region"
 }

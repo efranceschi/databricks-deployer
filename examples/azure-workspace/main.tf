@@ -16,7 +16,7 @@ module "azure_workspace" {
   # Azure
   create_resource_group          = var.create_resource_group
   azure_resource_group           = var.azure_resource_group
-  azure_location                 = var.azure_location
+  region                 = var.region
   azure_managed_resource_group_name = var.azure_managed_resource_group_name
 
   # Network Names

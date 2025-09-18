@@ -29,7 +29,7 @@ locals {
     "us-west-1"      = "com.amazonaws.vpce.us-west-1.vpce-svc-09bb6ca26208063f2"
     "us-west-2"      = "com.amazonaws.vpce.us-west-2.vpce-svc-0129f463fcfbc46c5"
   }
-  final_rest_api_service_name = local.rest_api_service_name_by_region[var.aws_region]
+  final_rest_api_service_name = local.rest_api_service_name_by_region[var.region]
 
   relay_service_name_by_region = {
     "ap-northeast-1" = "com.amazonaws.vpce.ap-northeast-1.vpce-svc-02aa633bda3edbec0"
@@ -49,7 +49,7 @@ locals {
     "us-west-1"      = "com.amazonaws.vpce.us-west-1.vpce-svc-04cb91f9372b792fe"
     "us-west-2"      = "com.amazonaws.vpce.us-west-2.vpce-svc-0158114c0c730c3bb"
   }
-  final_relay_service_name = local.relay_service_name_by_region[var.aws_region]
+  final_relay_service_name = local.relay_service_name_by_region[var.region]
 
 }
 
@@ -120,7 +120,7 @@ resource "databricks_mws_vpc_endpoint" "relay_service" {
   account_id              = var.databricks_account_id                   # Databricks account ID
   vpc_endpoint_name       = local.final_aws_relay_service_endpoint_name # Unique name for the VPC endpoint
   aws_vpc_endpoint_id     = aws_vpc_endpoint.relay_service[0].id        # AWS VPC endpoint ID
-  region                  = var.aws_region                              # AWS region
+  region                  = var.region                              # AWS region
   depends_on = [
     aws_vpc_endpoint.relay_service
   ]
@@ -134,7 +134,7 @@ resource "databricks_mws_vpc_endpoint" "rest_api" {
   account_id              = var.databricks_account_id              # Databricks account ID
   vpc_endpoint_name       = local.final_aws_rest_api_endpoint_name # Unique name for the VPC endpoint
   aws_vpc_endpoint_id     = aws_vpc_endpoint.rest_api[0].id        # AWS VPC endpoint ID
-  region                  = var.aws_region                         # AWS region
+  region                  = var.region                         # AWS region
   depends_on = [
     aws_vpc_endpoint.rest_api
   ]
@@ -167,7 +167,7 @@ resource "databricks_mws_networks" "databricks_network" {
 # Reference: https://docs.databricks.com/dev-tools/api/latest/account.html#operation/create-private-access-settings
 resource "databricks_mws_private_access_settings" "private_access_setting" {
   private_access_settings_name = local.final_private_access_setting_name          # Unique name for private access settings
-  region                       = var.aws_region                                   # AWS region
+  region                       = var.region                                   # AWS region
   public_access_enabled        = true                                             # Allow public internet access
   private_access_level         = var.enable_private_link ? "ACCOUNT" : "ENDPOINT" # Private access level: ACCOUNT (full PrivateLink) or ENDPOINT (VPC endpoints only)
 }

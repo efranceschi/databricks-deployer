@@ -12,7 +12,7 @@ pricing_tier = "PREMIUM"
 
 ### Google
 google_project = "my-gcp-project"
-google_region = "us-central1"
+region = "us-central1"
 google_service_account = "sa-name@my-gcp-project.iam.gserviceaccount.com"
 
 ### Network Names

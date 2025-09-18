@@ -9,7 +9,7 @@ workspace_name           = "myproject-workspace" # Optional, defaults to "${pref
 pricing_tier             = "ENTERPRISE" # Optional, defaults to "ENTERPRISE"
 
 ### AWS
-aws_region     = "us-west-2"
+region     = "us-west-2"
 # aws_role_arn = "arn:aws:iam::123456789012:role/databricks-role" # Optional: If not provided, a new role will be created
 
 ### Network

@@ -49,7 +49,7 @@ variable "pricing_tier" {
 }
 
 ### AWS
-variable "aws_region" {
+variable "region" {
   type        = string
   description = "AWS Region"
 }

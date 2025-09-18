@@ -77,7 +77,7 @@ module "databricks_gcp_workspace" {
 
   # Google
   google_project         = "my-gcp-project"
-  google_region          = "us-central1"
+  region          = "us-central1"
   google_service_account = "sa-name@my-gcp-project.iam.gserviceaccount.com"
 
   # Network
@@ -114,7 +114,7 @@ module "databricks_gcp_workspace" {
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | google_project | Google Project Name | `string` | n/a | yes |
-| google_region | Google Region | `string` | n/a | yes |
+| region | Google Region | `string` | n/a | yes |
 | google_service_account | Email of the service account used for deployment | `string` | n/a | yes |
 
 ### Network Names

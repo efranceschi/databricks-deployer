@@ -11,7 +11,7 @@ resource "databricks_mws_workspaces" "databricks_workspace" {
   account_id                 = var.databricks_account_id                                                                # Databricks account ID
   workspace_name             = local.final_workspace_name                                                               # Workspace display name
   deployment_name            = local.final_workspace_name                                                               # Workspace deployment name
-  aws_region                 = var.aws_region                                                                           # AWS region for deployment
+  aws_region                 = var.region                                                                           # AWS region for deployment
   network_id                 = databricks_mws_networks.databricks_network.network_id                                    # Network configuration ID
   private_access_settings_id = databricks_mws_private_access_settings.private_access_setting.private_access_settings_id # Private access settings ID
   pricing_tier               = var.pricing_tier                                                                         # Databricks pricing tier (STANDARD, PREMIUM, ENTERPRISE)

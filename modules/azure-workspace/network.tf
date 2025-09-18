@@ -18,7 +18,7 @@ locals {
 resource "azurerm_resource_group" "this" {
   count    = var.create_resource_group ? 1 : 0
   name     = local.final_azure_resource_group_name
-  location = var.azure_location
+  location = var.region
   tags     = var.tags
 }
 
@@ -36,7 +36,7 @@ resource "azurerm_virtual_network" "databricks_vnet" {
   count               = var.create_vnet ? 1 : 0
   name                = local.final_azure_vnet_name
   resource_group_name = local.resource_group_name
-  location            = var.azure_location
+  location            = var.region
   address_space       = [var.azure_vnet_cidr]
   tags                = var.tags
 }
@@ -52,7 +52,7 @@ resource "azurerm_network_security_group" "databricks_nsg" {
   count               = var.create_vnet ? 1 : 0
   name                = local.final_azure_nsg_name
   resource_group_name = local.resource_group_name
-  location            = var.azure_location
+  location            = var.region
   tags                = var.tags
 }
 
@@ -61,7 +61,7 @@ resource "azurerm_route_table" "databricks_route_table" {
   count               = var.create_vnet ? 1 : 0
   name                = local.final_azure_route_table_name
   resource_group_name = local.resource_group_name
-  location            = var.azure_location
+  location            = var.region
   tags                = var.tags
 }
 
@@ -70,7 +70,7 @@ resource "azurerm_public_ip" "nat_gateway_ip" {
   count               = var.create_vnet ? 1 : 0
   name                = "${local.final_azure_nat_gateway_name}-ip"
   resource_group_name = local.resource_group_name
-  location            = var.azure_location
+  location            = var.region
   allocation_method   = "Static"
   sku                 = "Standard"
   tags                = var.tags
@@ -80,7 +80,7 @@ resource "azurerm_nat_gateway" "databricks_nat" {
   count               = var.create_vnet ? 1 : 0
   name                = local.final_azure_nat_gateway_name
   resource_group_name = local.resource_group_name
-  location            = var.azure_location
+  location            = var.region
   sku_name            = "Standard"
   tags                = var.tags
 }
