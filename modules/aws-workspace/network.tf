@@ -23,10 +23,12 @@ locals {
     cidrsubnet(var.aws_vpc_cidr, var.aws_vpc_cidr_newbits, i + length(local.final_availability_zones))
   ])
 
-  final_aws_subnet_service_cidrs = coalesce(var.aws_subnet_service_cidrs, [
-    for i in range(length(local.final_availability_zones)) :
-    cidrsubnet(var.aws_vpc_cidr, var.aws_vpc_cidr_newbits, i + (2 * length(local.final_availability_zones)))
-  ])
+  final_aws_subnet_service_cidrs = var.enable_private_link ? (
+    coalesce(var.aws_subnet_service_cidrs, [
+      for i in range(length(local.final_availability_zones)) :
+      cidrsubnet(var.aws_vpc_cidr, var.aws_vpc_cidr_newbits, i + (2 * length(local.final_availability_zones)))
+    ])
+  ) : []
 }
 
 ### VPC
@@ -62,7 +64,7 @@ resource "aws_internet_gateway" "databricks_igw" {
 
 ### Public Subnets
 resource "aws_subnet" "public" {
-  count                   = var.create_vpc ? length(local.final_availability_zones) : 0
+  count                   = var.create_vpc ? length(local.final_aws_subnet_public_cidrs) : 0
   vpc_id                  = aws_vpc.databricks_vpc[0].id
   cidr_block              = local.final_aws_subnet_public_cidrs[count.index]
   availability_zone       = local.final_availability_zones[count.index]
@@ -74,7 +76,7 @@ resource "aws_subnet" "public" {
 
 ### Private Subnets
 resource "aws_subnet" "private" {
-  count                   = var.create_vpc ? length(local.final_availability_zones) : 0
+  count                   = var.create_vpc ? length(local.final_aws_subnet_private_cidrs) : 0
   vpc_id                  = aws_vpc.databricks_vpc[0].id
   cidr_block              = local.final_aws_subnet_private_cidrs[count.index]
   availability_zone       = local.final_availability_zones[count.index]
@@ -88,7 +90,7 @@ resource "aws_subnet" "private" {
 # These subnets are dedicated to hosting VPC endpoints for Databricks PrivateLink
 # Reference: https://docs.databricks.com/en/security/network/privatelink.html
 resource "aws_subnet" "service" {
-  count                   = var.create_vpc ? length(local.final_availability_zones) : 0
+  count                   = var.create_vpc ? length(local.final_aws_subnet_service_cidrs) : 0
   vpc_id                  = aws_vpc.databricks_vpc[0].id
   cidr_block              = local.final_aws_subnet_service_cidrs[count.index]
   availability_zone       = local.final_availability_zones[count.index]
@@ -100,7 +102,7 @@ resource "aws_subnet" "service" {
 
 ### Elastic IPs for NAT Gateways
 resource "aws_eip" "nat" {
-  count  = var.create_vpc ? length(local.final_availability_zones) : 0
+  count  = var.create_vpc ? length(local.final_aws_subnet_public_cidrs) : 0
   domain = "vpc"
   tags = merge(var.tags, {
     Name = "${local.final_aws_nat_gateway_name}-eip-${count.index + 1}"
@@ -109,7 +111,7 @@ resource "aws_eip" "nat" {
 
 ### NAT Gateways
 resource "aws_nat_gateway" "databricks_nat" {
-  count         = var.create_vpc ? length(local.final_availability_zones) : 0
+  count         = var.create_vpc ? length(local.final_aws_subnet_public_cidrs) : 0
   allocation_id = aws_eip.nat[count.index].id
   subnet_id     = aws_subnet.public[count.index].id
   tags = merge(var.tags, {
@@ -127,6 +129,14 @@ resource "aws_route_table" "public" {
   })
 }
 
+resource "aws_route_table" "private" {
+  count  = var.create_vpc ? length(local.final_aws_subnet_private_cidrs) : 0
+  vpc_id = aws_vpc.databricks_vpc[0].id
+  tags = merge(var.tags, {
+    Name = "${var.prefix}-private-rt-${count.index + 1}"
+  })
+}
+
 resource "aws_route" "public_internet_gateway" {
   count                  = var.create_vpc ? 1 : 0
   route_table_id         = aws_route_table.public[0].id
@@ -134,35 +144,27 @@ resource "aws_route" "public_internet_gateway" {
   gateway_id             = aws_internet_gateway.databricks_igw[0].id
 }
 
-resource "aws_route_table_association" "public" {
-  count          = var.create_vpc ? length(local.final_availability_zones) : 0
-  subnet_id      = aws_subnet.public[count.index].id
-  route_table_id = aws_route_table.public[0].id
-}
-
-resource "aws_route_table" "private" {
-  count  = var.create_vpc ? length(local.final_availability_zones) : 0
-  vpc_id = aws_vpc.databricks_vpc[0].id
-  tags = merge(var.tags, {
-    Name = "${var.prefix}-private-rt-${count.index + 1}"
-  })
-}
-
 resource "aws_route" "private_nat_gateway" {
-  count                  = var.create_vpc ? length(local.final_availability_zones) : 0
+  count                  = var.create_vpc ? length(local.final_aws_subnet_private_cidrs) : 0
   route_table_id         = aws_route_table.private[count.index].id
   destination_cidr_block = "0.0.0.0/0"
   nat_gateway_id         = aws_nat_gateway.databricks_nat[count.index].id
 }
 
+resource "aws_route_table_association" "public" {
+  count          = var.create_vpc ? length(local.final_aws_subnet_public_cidrs) : 0
+  subnet_id      = aws_subnet.public[count.index].id
+  route_table_id = aws_route_table.public[0].id
+}
+
 resource "aws_route_table_association" "private" {
-  count          = var.create_vpc ? length(local.final_availability_zones) : 0
+  count          = var.create_vpc ? length(local.final_aws_subnet_private_cidrs) : 0
   subnet_id      = aws_subnet.private[count.index].id
   route_table_id = aws_route_table.private[count.index].id
 }
 
 resource "aws_route_table_association" "service" {
-  count          = var.create_vpc ? length(local.final_availability_zones) : 0
+  count          = var.create_vpc ? length(local.final_aws_subnet_service_cidrs) : 0
   subnet_id      = aws_subnet.service[count.index].id
   route_table_id = aws_route_table.private[count.index].id
 }
