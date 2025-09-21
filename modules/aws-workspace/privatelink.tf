@@ -99,7 +99,7 @@ data "aws_subnet" "existing_private" {
   count = var.create_vpc ? 0 : length(local.final_availability_zones)
   filter {
     name   = "tag:Name"
-    values = ["${local.final_aws_subnet_private_name_prefix}-${count.index + 1}"]
+    values = ["${local.final_aws_subnet_private_name}-${count.index + 1}"]
   }
 }
 
@@ -107,7 +107,7 @@ data "aws_subnet" "existing_service" {
   count = var.create_vpc ? 0 : length(local.final_availability_zones)
   filter {
     name   = "tag:Name"
-    values = ["${local.final_aws_subnet_service_name_prefix}-${count.index + 1}"]
+    values = ["${local.final_aws_subnet_service_name}-${count.index + 1}"]
   }
 }
 

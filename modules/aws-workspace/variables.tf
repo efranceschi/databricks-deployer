@@ -73,19 +73,19 @@ variable "create_vpc" {
   default     = true
 }
 
-variable "aws_subnet_public_name_prefix" {
+variable "aws_subnet_public_name" {
   type        = string
   description = "Prefix for public subnet names"
   default     = null
 }
 
-variable "aws_subnet_private_name_prefix" {
+variable "aws_subnet_private_name" {
   type        = string
   description = "Prefix for private subnet names"
   default     = null
 }
 
-variable "aws_subnet_service_name_prefix" {
+variable "aws_subnet_service_name" {
   type        = string
   description = "Prefix for service subnet names (used for VPC endpoints)"
   default     = null

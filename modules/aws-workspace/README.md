@@ -79,8 +79,9 @@ This Terraform module deploys a Databricks workspace in AWS with the following c
 | pricing_tier | Pricing Tier | `string` | `"ENTERPRISE"` | no |
 | create_vpc | Terraform should create the VPC | `bool` | `true` | no |
 | aws_vpc_name | VPC name used for deployment | `string` | `null` | no |
-| aws_subnet_public_name_prefix | Prefix for public subnet names | `string` | `null` | no |
-| aws_subnet_private_name_prefix | Prefix for private subnet names | `string` | `null` | no |
+| aws_subnet_public_name | Prefix for public subnet names | `string` | `null` | no |
+| aws_subnet_private_name | Prefix for private subnet names | `string` | `null` | no |
+| aws_subnet_service_name | Prefix for service subnet names (used for VPC endpoints) | `string` | `null` | no |
 | aws_security_group_name | Name of the security group to create | `string` | `null` | no |
 | aws_nat_gateway_name | Name of the NAT gateway | `string` | `null` | no |
 | aws_internet_gateway_name | Name of the internet gateway | `string` | `null` | no |

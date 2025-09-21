@@ -17,9 +17,9 @@ create_vpc = true # Set to false if you want to use existing VPC
 
 # If create_vpc = false, specify existing resources
 # aws_vpc_name = "existing-vpc"
-# aws_subnet_public_name_prefix = "existing-public-subnet"
-# aws_subnet_private_name_prefix = "existing-private-subnet"
-# aws_subnet_service_name_prefix = "existing-service-subnet"
+# aws_subnet_public_name = "existing-public-subnet"
+# aws_subnet_private_name = "existing-private-subnet"
+# aws_subnet_service_name = "existing-service-subnet"
 # aws_security_group_name = "existing-sg"
 
 ### Network CIDRs

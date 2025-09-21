@@ -2,9 +2,9 @@
 locals {
   # Names
   final_aws_vpc_name                   = coalesce(var.aws_vpc_name, "${var.prefix}-vpc")
-  final_aws_subnet_public_name_prefix  = coalesce(var.aws_subnet_public_name_prefix, "${var.prefix}-public-subnet")
-  final_aws_subnet_private_name_prefix = coalesce(var.aws_subnet_private_name_prefix, "${var.prefix}-private-subnet")
-  final_aws_subnet_service_name_prefix = coalesce(var.aws_subnet_service_name_prefix, "${var.prefix}-service-subnet")
+  final_aws_subnet_public_name  = coalesce(var.aws_subnet_public_name, "${var.prefix}-public-subnet")
+  final_aws_subnet_private_name = coalesce(var.aws_subnet_private_name, "${var.prefix}-private-subnet")
+  final_aws_subnet_service_name = coalesce(var.aws_subnet_service_name, "${var.prefix}-service-subnet")
   final_aws_security_group_name        = coalesce(var.aws_security_group_name, "${var.prefix}-sg")
   final_aws_nat_gateway_name           = coalesce(var.aws_nat_gateway_name, "${var.prefix}-nat")
   final_aws_internet_gateway_name      = coalesce(var.aws_internet_gateway_name, "${var.prefix}-igw")
@@ -70,7 +70,7 @@ resource "aws_subnet" "public" {
   availability_zone       = local.final_availability_zones[count.index]
   map_public_ip_on_launch = true
   tags = merge(var.tags, {
-    Name = "${local.final_aws_subnet_public_name_prefix}-${count.index + 1}"
+    Name = "${local.final_aws_subnet_public_name}-${count.index + 1}"
   })
 }
 
@@ -82,7 +82,7 @@ resource "aws_subnet" "private" {
   availability_zone       = local.final_availability_zones[count.index]
   map_public_ip_on_launch = false
   tags = merge(var.tags, {
-    Name = "${local.final_aws_subnet_private_name_prefix}-${count.index + 1}"
+    Name = "${local.final_aws_subnet_private_name}-${count.index + 1}"
   })
 }
 
@@ -96,7 +96,7 @@ resource "aws_subnet" "service" {
   availability_zone       = local.final_availability_zones[count.index]
   map_public_ip_on_launch = false
   tags = merge(var.tags, {
-    Name = "${local.final_aws_subnet_service_name_prefix}-${count.index + 1}"
+    Name = "${local.final_aws_subnet_service_name}-${count.index + 1}"
   })
 }
 

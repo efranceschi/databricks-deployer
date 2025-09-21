@@ -14,18 +14,18 @@ module "aws_workspace" {
   pricing_tier                = var.pricing_tier
 
   # AWS
-  region   = var.region
+  region       = var.region
   aws_role_arn = var.aws_role_arn
 
   # Network
-  create_vpc                     = var.create_vpc
-  aws_vpc_name                   = var.aws_vpc_name
-  aws_subnet_public_name_prefix  = var.aws_subnet_public_name_prefix
-  aws_subnet_private_name_prefix = var.aws_subnet_private_name_prefix
-  aws_subnet_service_name_prefix = var.aws_subnet_service_name_prefix
-  aws_security_group_name        = var.aws_security_group_name
-  aws_nat_gateway_name           = var.aws_nat_gateway_name
-  aws_internet_gateway_name      = var.aws_internet_gateway_name
+  create_vpc                = var.create_vpc
+  aws_vpc_name              = var.aws_vpc_name
+  aws_subnet_public_name    = var.aws_subnet_public_name
+  aws_subnet_private_name   = var.aws_subnet_private_name
+  aws_subnet_service_name   = var.aws_subnet_service_name
+  aws_security_group_name   = var.aws_security_group_name
+  aws_nat_gateway_name      = var.aws_nat_gateway_name
+  aws_internet_gateway_name = var.aws_internet_gateway_name
 
   # Network CIDRs
   aws_vpc_cidr             = var.aws_vpc_cidr
