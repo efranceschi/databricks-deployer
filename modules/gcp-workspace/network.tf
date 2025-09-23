@@ -11,7 +11,7 @@ locals {
   # CIDRs
   final_google_subnet_ip_cidr = coalesce(var.google_subnet_ip_cidr, cidrsubnet(var.google_vpc_cidr, var.google_vpc_cidr_newbits, 0))
   final_google_pods_ip_cidr   = coalesce(var.google_pods_ip_cidr, cidrsubnet(var.google_vpc_cidr, var.google_vpc_cidr_newbits, 1))
-  final_google_svc_ip_cidr    = coalesce(var.google_svc_ip_cidr, cidrsubnet(var.google_vpc_cidr, var.google_vpc_cidr_newbits, 2))
+  final_google_svc_ip_cidr    = var.enable_psc == false ? [] : coalesce(var.google_svc_ip_cidr, cidrsubnet(var.google_vpc_cidr, var.google_vpc_cidr_newbits, 2))
 }
 
 ### VPC
@@ -23,9 +23,9 @@ resource "google_compute_network" "dbx_private_vpc" {
 }
 
 data "google_compute_network" "existing_vpc" {
-  count                   = var.create_vpc ? 0 : 1
-  project                 = var.google_project
-  name                    = local.final_google_vpc_name
+  count   = var.create_vpc ? 0 : 1
+  project = var.google_project
+  name    = local.final_google_vpc_name
 }
 
 ### Subnets
@@ -38,6 +38,7 @@ resource "google_compute_subnetwork" "network-with-private-secondary-ip-ranges" 
 }
 
 resource "google_compute_subnetwork" "backend_svc_subnetwork" {
+  count                    = length(local.final_google_svc_ip_cidr) > 0 ? 1 : 0
   name                     = local.final_google_subnet_svc_name
   ip_cidr_range            = local.final_google_svc_ip_cidr
   region                   = var.region

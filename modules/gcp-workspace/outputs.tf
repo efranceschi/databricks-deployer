@@ -43,7 +43,7 @@ output "pods_subnet_id" {
 
 output "services_subnet_id" {
   description = "The ID of the services subnet"
-  value       = google_compute_subnetwork.backend_svc_subnetwork.id
+  value       = local.final_enable_dataplane_relay_psc || local.final_enable_rest_api_psc ? google_compute_subnetwork.backend_svc_subnetwork[0].id : null
 }
 
 ### PSC Outputs

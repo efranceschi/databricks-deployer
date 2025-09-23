@@ -57,7 +57,7 @@ resource "google_compute_address" "dataplane_relay_endpoint_ip_address" {
   name         = local.final_google_dataplane_relay_endpoint_ip_name
   project      = var.google_project
   region       = var.region
-  subnetwork   = google_compute_subnetwork.backend_svc_subnetwork.id
+  subnetwork   = google_compute_subnetwork.backend_svc_subnetwork[0].id
   address_type = "INTERNAL"
 }
 
@@ -78,7 +78,7 @@ resource "google_compute_address" "rest_api_ip_address" {
   name         = local.final_google_rest_api_endpoint_ip_name
   project      = var.google_project
   region       = var.region
-  subnetwork   = google_compute_subnetwork.backend_svc_subnetwork.id
+  subnetwork   = google_compute_subnetwork.backend_svc_subnetwork[0].id
   address_type = "INTERNAL"
 }
 
