@@ -127,9 +127,12 @@ resource "databricks_mws_networks" "databricks_network" {
     subnet_id          = google_compute_subnetwork.network-with-private-secondary-ip-ranges.name
     subnet_region      = google_compute_subnetwork.network-with-private-secondary-ip-ranges.region
   }
-  vpc_endpoints {
-    dataplane_relay = local.final_enable_dataplane_relay_psc ? [databricks_mws_vpc_endpoint.dataplane_relay[0].vpc_endpoint_id] : []
-    rest_api        = local.final_enable_rest_api_psc ? [databricks_mws_vpc_endpoint.rest_api[0].vpc_endpoint_id] : []
+  dynamic "vpc_endpoints" {
+    for_each = local.final_enable_dataplane_relay_psc || local.final_enable_rest_api_psc ? [1] : []
+    content {
+      dataplane_relay = local.final_enable_dataplane_relay_psc ? [databricks_mws_vpc_endpoint.dataplane_relay[0].vpc_endpoint_id] : null
+      rest_api        = local.final_enable_rest_api_psc ? [databricks_mws_vpc_endpoint.rest_api[0].vpc_endpoint_id] : null
+    }
   }
 }
 
