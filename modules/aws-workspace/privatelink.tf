@@ -56,7 +56,6 @@ locals {
 ### VPC Endpoints for PrivateLink
 # Create VPC endpoint for Databricks relay/backend service
 # This endpoint handles cluster communication and data plane traffic
-# Reference: https://docs.databricks.com/en/security/network/privatelink.html#step-2-create-a-vpc-endpoint-for-the-relay
 resource "aws_vpc_endpoint" "relay_service" {
   count               = var.enable_private_link ? 1 : 0
   vpc_id              = var.create_vpc ? aws_vpc.databricks_vpc[0].id : data.aws_vpc.existing_vpc[0].id
@@ -72,7 +71,6 @@ resource "aws_vpc_endpoint" "relay_service" {
 
 # Create VPC endpoint for Databricks REST API service
 # This endpoint handles workspace API calls and web application traffic
-# Reference: https://docs.databricks.com/en/security/network/privatelink.html#step-3-create-a-vpc-endpoint-for-the-rest-api
 resource "aws_vpc_endpoint" "rest_api" {
   count               = var.enable_private_link ? 1 : 0
   vpc_id              = var.create_vpc ? aws_vpc.databricks_vpc[0].id : data.aws_vpc.existing_vpc[0].id
@@ -114,7 +112,6 @@ data "aws_subnet" "existing_service" {
 ### Databricks VPC Endpoints
 # Register AWS VPC endpoint with Databricks for relay/backend service
 # This creates a Databricks-managed VPC endpoint configuration
-# Reference: https://docs.databricks.com/dev-tools/api/latest/account.html#operation/create-vpc-endpoint
 resource "databricks_mws_vpc_endpoint" "relay_service" {
   count                   = var.enable_private_link ? 1 : 0
   account_id              = var.databricks_account_id                   # Databricks account ID
@@ -128,7 +125,6 @@ resource "databricks_mws_vpc_endpoint" "relay_service" {
 
 # Register AWS VPC endpoint with Databricks for REST API service
 # This creates a Databricks-managed VPC endpoint configuration
-# Reference: https://docs.databricks.com/dev-tools/api/latest/account.html#operation/create-vpc-endpoint
 resource "databricks_mws_vpc_endpoint" "rest_api" {
   count                   = var.enable_private_link ? 1 : 0
   account_id              = var.databricks_account_id              # Databricks account ID
@@ -143,7 +139,6 @@ resource "databricks_mws_vpc_endpoint" "rest_api" {
 ### Databricks Network
 # Configure network settings for Databricks workspace
 # This defines the VPC, subnets, security groups, and VPC endpoints for the workspace
-# Reference: https://docs.databricks.com/dev-tools/api/latest/account.html#operation/create-network-configuration
 resource "databricks_mws_networks" "databricks_network" {
   account_id   = var.databricks_account_id                                                          # Databricks account ID
   network_name = local.final_network_config_name                                                    # Network configuration name
@@ -164,10 +159,10 @@ resource "databricks_mws_networks" "databricks_network" {
 ### Databricks Private Access Setting
 # Configure private access settings for the Databricks workspace
 # This controls how the workspace can be accessed (publicly and/or privately)
-# Reference: https://docs.databricks.com/dev-tools/api/latest/account.html#operation/create-private-access-settings
 resource "databricks_mws_private_access_settings" "private_access_setting" {
-  private_access_settings_name = local.final_private_access_setting_name          # Unique name for private access settings
-  region                       = var.region                                   # AWS region
-  public_access_enabled        = true                                             # Allow public internet access
-  private_access_level         = var.enable_private_link ? "ACCOUNT" : "ENDPOINT" # Private access level: ACCOUNT (full PrivateLink) or ENDPOINT (VPC endpoints only)
+  count                        = var.pricing_tier == "ENTERPRISE" ? 1 : 0
+  private_access_settings_name = local.final_private_access_setting_name  # Unique name for private access settings
+  region                       = var.region                               # AWS region
+  public_access_enabled        = true                                     # Allow public internet access
+  private_access_level         = "ACCOUNT"                                # Private access level: ACCOUNT (full PrivateLink) or ENDPOINT (VPC endpoints only)
 }

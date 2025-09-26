@@ -44,8 +44,12 @@ variable "private_access_setting_name" {
 
 variable "pricing_tier" {
   type        = string
-  description = "Pricing Tier"
-  default     = "PREMIUM"
+  description = "Pricing Tier. Allowed values: PREMIUM or ENTERPRISE"
+  default     = "ENTERPRISE"
+  validation {
+    condition     = contains(["PREMIUM", "ENTERPRISE"], var.pricing_tier)
+    error_message = "The pricing_tier variable must be either 'PREMIUM' or 'ENTERPRISE'."
+  }
 }
 
 ### Google

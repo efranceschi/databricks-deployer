@@ -8,15 +8,19 @@ locals {
 # Create Databricks workspace using Multi-Workspace API (MWS)
 # Reference: https://docs.databricks.com/dev-tools/api/latest/account.html#operation/create-workspace
 resource "databricks_mws_workspaces" "databricks_workspace" {
-  account_id                 = var.databricks_account_id                                                                # Databricks account ID
-  workspace_name             = local.final_workspace_name                                                               # Workspace display name
-  deployment_name            = local.final_workspace_name                                                               # Workspace deployment name
-  aws_region                 = var.region                                                                           # AWS region for deployment
-  network_id                 = databricks_mws_networks.databricks_network.network_id                                    # Network configuration ID
-  private_access_settings_id = databricks_mws_private_access_settings.private_access_setting.private_access_settings_id # Private access settings ID
-  pricing_tier               = var.pricing_tier                                                                         # Databricks pricing tier (STANDARD, PREMIUM, ENTERPRISE)
-  credentials_id             = databricks_mws_credentials.this.credentials_id                                           # Cross-account IAM role credentials ID
-  storage_configuration_id   = databricks_mws_storage_configurations.this.storage_configuration_id                      # Storage configuration ID for root S3 bucket
+  account_id               = var.databricks_account_id                                           # Databricks account ID
+  workspace_name           = local.final_workspace_name                                          # Workspace display name
+  deployment_name          = local.final_workspace_name                                          # Workspace deployment name
+  aws_region               = var.region                                                          # AWS region for deployment
+  network_id               = databricks_mws_networks.databricks_network.network_id               # Network configuration ID
+  pricing_tier             = upper(var.pricing_tier)                                             # Databricks pricing tier (STANDARD, PREMIUM, ENTERPRISE)
+  credentials_id           = databricks_mws_credentials.this.credentials_id                      # Cross-account IAM role credentials ID
+  storage_configuration_id = databricks_mws_storage_configurations.this.storage_configuration_id # Storage configuration ID for root S3 bucket
+  private_access_settings_id = (
+    upper(var.pricing_tier) == "ENTERPRISE"
+    ? databricks_mws_private_access_settings.private_access_setting[0].private_access_settings_id
+    : null
+  ) # Private access settings ID
 }
 
 ### Metastore Data Source
