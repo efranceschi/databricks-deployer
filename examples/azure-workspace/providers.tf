@@ -1,3 +1,14 @@
+terraform {
+  required_providers {
+    databricks = {
+      source = "databricks/databricks"
+    }
+    aws = {
+      source = "hashicorp/azurerm"
+    }
+  }
+}
+
 provider "azurerm" {
   features {}
   subscription_id = var.azure_subscription_id
