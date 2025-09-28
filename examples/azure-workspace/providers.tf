@@ -4,7 +4,7 @@ provider "azurerm" {
 }
 
 provider "databricks" {
-  host          = "https://accounts.cloud.databricks.com"
+  host          = "https://accounts.azuredatabricks.net"
   account_id    = var.databricks_account_id
   client_id     = var.databricks_client_id
   client_secret = var.databricks_client_secret
