@@ -1,28 +1,28 @@
 ### Workspace Outputs
-output "databricks_workspace_id" {
-  description = "The ID of the Databricks workspace"
-  value       = azurerm_databricks_workspace.databricks_workspace.workspace_id
-}
+# output "databricks_workspace_id" {
+#   description = "The ID of the Databricks workspace"
+#   value       = azurerm_databricks_workspace.databricks_workspace.workspace_id
+# }
 
-output "databricks_workspace_url" {
-  description = "The URL of the Databricks workspace"
-  value       = azurerm_databricks_workspace.databricks_workspace.workspace_url
-}
+# output "databricks_workspace_url" {
+#   description = "The URL of the Databricks workspace"
+#   value       = azurerm_databricks_workspace.databricks_workspace.workspace_url
+# }
 
-output "azure_databricks_workspace_id" {
-  description = "The ID of the Azure Databricks workspace"
-  value       = azurerm_databricks_workspace.databricks_workspace.id
-}
+# output "azure_databricks_workspace_id" {
+#   description = "The ID of the Azure Databricks workspace"
+#   value       = azurerm_databricks_workspace.databricks_workspace.id
+# }
 
-output "azure_databricks_workspace_url" {
-  description = "The URL of the Azure Databricks workspace"
-  value       = azurerm_databricks_workspace.databricks_workspace.workspace_url
-}
+# output "azure_databricks_workspace_url" {
+#   description = "The URL of the Azure Databricks workspace"
+#   value       = azurerm_databricks_workspace.databricks_workspace.workspace_url
+# }
 
-output "azure_managed_resource_group_name" {
-  description = "The name of the managed resource group for the Azure Databricks workspace"
-  value       = azurerm_databricks_workspace.databricks_workspace.managed_resource_group_name
-}
+# output "azure_managed_resource_group_name" {
+#   description = "The name of the managed resource group for the Azure Databricks workspace"
+#   value       = azurerm_databricks_workspace.databricks_workspace.managed_resource_group_name
+# }
 
 output "azure_resource_group_name" {
   description = "The name of the resource group used for the Databricks workspace"
@@ -59,7 +59,7 @@ output "azure_subnet_private_id" {
 }
 
 ### Private Link Outputs
-output "azure_private_endpoint_id" {
-  description = "The ID of the private endpoint"
-  value       = var.enable_private_link ? azurerm_private_endpoint.databricks_endpoint[0].id : null
-}
+# output "azure_private_endpoint_id" {
+#   description = "The ID of the private endpoint"
+#   value       = var.enable_private_link ? azurerm_private_endpoint.databricks_endpoint[0].id : null
+# }

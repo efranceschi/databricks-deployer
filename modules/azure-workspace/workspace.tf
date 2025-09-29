@@ -2,7 +2,7 @@
 locals {
   # Names
   final_workspace_name                = coalesce(var.workspace_name, "${var.prefix}")
-  final_managed_resource_group_name   = coalesce(var.azure_managed_resource_group_name, "${var.prefix}-databricks-managed-rg")
+  final_managed_resource_group_name   = coalesce(var.azure_managed_resource_group_name, "${var.prefix}-managed-rg")
 }
 
 ### Workspace
@@ -10,7 +10,7 @@ resource "azurerm_databricks_workspace" "databricks_workspace" {
   name                        = local.final_workspace_name
   resource_group_name         = local.resource_group_name
   location                    = var.region
-  sku                         = var.pricing_tier
+  sku                         = lower(var.pricing_tier)
   managed_resource_group_name = local.final_managed_resource_group_name
   tags                        = var.tags
 
@@ -23,6 +23,3 @@ resource "azurerm_databricks_workspace" "databricks_workspace" {
     private_subnet_network_security_group_association_id = var.create_vnet ? azurerm_subnet_network_security_group_association.private_nsg[0].id : null
   }
 }
-
-# Note: For Azure deployments, we use azurerm_databricks_workspace resource above
-# The databricks_mws_workspaces resource is only for AWS or GCP deployments

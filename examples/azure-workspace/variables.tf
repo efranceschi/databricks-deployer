@@ -45,7 +45,7 @@ variable "private_access_setting_name" {
 variable "pricing_tier" {
   type        = string
   description = "Pricing Tier"
-  default     = "premium"
+  default     = "PREMIUM"
 }
 
 ### Azure
@@ -69,11 +69,6 @@ variable "azure_resource_group" {
 variable "region" {
   type        = string
   description = "Azure Location"
-}
-
-variable "azure_tenant_id" {
-  type        = string
-  description = "Azure Tenant ID"
 }
 
 variable "azure_managed_resource_group_name" {
