@@ -101,6 +101,12 @@ variable "azure_subnet_private_name" {
   default     = null
 }
 
+variable "azure_subnet_service_name" {
+  type        = string
+  description = "Private subnet name used for deployment"
+  default     = null
+}
+
 variable "azure_nsg_name" {
   type        = string
   description = "Name of the network security group to create"
@@ -141,6 +147,12 @@ variable "azure_subnet_public_cidr" {
 variable "azure_subnet_private_cidr" {
   type        = string
   description = "IP Range for private subnet"
+  default     = null
+}
+
+variable "azure_subnet_service_cidr" {
+  type        = string
+  description = "IP Range for service subnet"
   default     = null
 }
 

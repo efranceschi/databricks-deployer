@@ -24,6 +24,7 @@ module "azure_workspace" {
   create_vnet               = var.create_vnet
   azure_subnet_public_name  = var.azure_subnet_public_name
   azure_subnet_private_name = var.azure_subnet_private_name
+  azure_subnet_service_name = var.azure_subnet_service_name
   azure_nsg_name            = var.azure_nsg_name
   azure_route_table_name    = var.azure_route_table_name
   azure_nat_gateway_name    = var.azure_nat_gateway_name
@@ -33,6 +34,7 @@ module "azure_workspace" {
   azure_vnet_cidr_newbits   = var.azure_vnet_cidr_newbits
   azure_subnet_public_cidr  = var.azure_subnet_public_cidr
   azure_subnet_private_cidr = var.azure_subnet_private_cidr
+  azure_subnet_service_cidr = var.azure_subnet_service_cidr
 
   # Private Link
   enable_private_link         = var.enable_private_link

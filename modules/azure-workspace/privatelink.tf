@@ -7,26 +7,26 @@ locals {
 }
 
 ### Private Link Resources
-# resource "azurerm_private_endpoint" "databricks_endpoint" {
-#   count               = var.enable_private_link ? 1 : 0
-#   name                = local.final_azure_private_endpoint_name
-#   resource_group_name = local.resource_group_name
-#   location            = var.region
-#   subnet_id           = var.create_vnet ? azurerm_subnet.private[0].id : data.azurerm_subnet.existing_private[0].id
-#   tags                = var.tags
+resource "azurerm_private_endpoint" "databricks_endpoint" {
+  count               = var.enable_private_link ? 1 : 0
+  name                = local.final_azure_private_endpoint_name
+  resource_group_name = local.resource_group_name
+  location            = var.region
+  subnet_id           = var.create_vnet ? azurerm_subnet.service[0].id : data.azurerm_subnet.existing_service[0].id
+  tags                = var.tags
 
-#   private_service_connection {
-#     name                           = "${local.final_azure_private_endpoint_name}-connection"
-#     private_connection_resource_id = azurerm_databricks_workspace.databricks_workspace.id
-#     is_manual_connection           = false
-#     subresource_names              = ["databricks_ui_api"]
-#   }
+  private_service_connection {
+    name                           = "${local.final_azure_private_endpoint_name}-connection"
+    private_connection_resource_id = azurerm_databricks_workspace.databricks_workspace.id
+    is_manual_connection           = false
+    subresource_names              = ["databricks_ui_api"]
+  }
 
-#   private_dns_zone_group {
-#     name                 = "${local.final_azure_private_endpoint_name}-dns-group"
-#     private_dns_zone_ids = [azurerm_private_dns_zone.databricks_dns[0].id]
-#   }
-# }
+  private_dns_zone_group {
+    name                 = "${local.final_azure_private_endpoint_name}-dns-group"
+    private_dns_zone_ids = [azurerm_private_dns_zone.databricks_dns[0].id]
+  }
+}
 
 resource "azurerm_private_dns_zone" "databricks_dns" {
   count               = var.enable_private_link ? 1 : 0
