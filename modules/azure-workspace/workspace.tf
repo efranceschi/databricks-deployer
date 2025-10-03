@@ -35,6 +35,6 @@ data "databricks_metastore" "this" {
 # Reference: https://docs.databricks.com/data-governance/unity-catalog/index.html
 resource "databricks_metastore_assignment" "this" {
   count        = var.metastore != null ? 1 : 0
-  workspace_id = databricks_mws_workspaces.databricks_workspace.workspace_id
+  workspace_id = azurerm_databricks_workspace.databricks_workspace.workspace_id
   metastore_id = data.databricks_metastore.this[0].id
 }
