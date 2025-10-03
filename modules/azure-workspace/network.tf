@@ -119,7 +119,7 @@ resource "azurerm_subnet" "private" {
 }
 
 resource "azurerm_subnet" "service" {
-  count                = var.create_vnet ? 1 : 0
+  count                = var.create_vnet && var.enable_private_link ? 1 : 0
   name                 = local.final_azure_subnet_service_name
   resource_group_name  = local.resource_group_name
   virtual_network_name = azurerm_virtual_network.databricks_vnet[0].name
@@ -140,7 +140,7 @@ resource "azurerm_subnet_network_security_group_association" "private_nsg" {
 }
 
 resource "azurerm_subnet_network_security_group_association" "service_nsg" {
-  count                     = var.create_vnet ? 1 : 0
+  count                     = var.create_vnet && var.enable_private_link ? 1 : 0
   subnet_id                 = azurerm_subnet.service[0].id
   network_security_group_id = azurerm_network_security_group.databricks_nsg[0].id
 }
@@ -158,7 +158,7 @@ resource "azurerm_subnet_route_table_association" "private_route_table" {
 }
 
 resource "azurerm_subnet_route_table_association" "service_route_table" {
-  count          = var.create_vnet ? 1 : 0
+  count          = var.create_vnet && var.enable_private_link ? 1 : 0
   subnet_id      = azurerm_subnet.service[0].id
   route_table_id = azurerm_route_table.databricks_route_table[0].id
 }
