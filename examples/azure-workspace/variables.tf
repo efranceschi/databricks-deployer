@@ -186,3 +186,10 @@ variable "tags" {
   description = "Tags to apply to resources"
   default     = {}
 }
+
+### Metastore
+variable "metastore" {
+  type        = string
+  description = "Metastore name to assign to the workspace. If null, no metastore will be assigned."
+  default     = null
+}

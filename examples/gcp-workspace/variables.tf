@@ -192,3 +192,10 @@ variable "google_rest_api_endpoint_ip_name" {
   description = "Name of IP REST API Endpoint"
   default     = null
 }
+
+### Metastore
+variable "metastore" {
+  type        = string
+  description = "Metastore name to assign to the workspace. If null, no metastore will be assigned."
+  default     = null
+}

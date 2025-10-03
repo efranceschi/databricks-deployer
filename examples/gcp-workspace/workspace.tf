@@ -44,6 +44,9 @@ module "databricks_gcp_workspace" {
   google_rest_api_endpoint_vpc_name        = var.google_rest_api_endpoint_vpc_name
   google_rest_api_endpoint_psc_name        = var.google_rest_api_endpoint_psc_name
   google_rest_api_endpoint_ip_name         = var.google_rest_api_endpoint_ip_name
+
+  ### Metastore
+  metastore = var.metastore
 }
 
 ### Outputs

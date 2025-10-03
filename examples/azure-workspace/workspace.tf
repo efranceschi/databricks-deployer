@@ -37,9 +37,13 @@ module "azure_workspace" {
   azure_subnet_service_cidr = var.azure_subnet_service_cidr
 
   # Private Link
-  enable_private_link         = var.enable_private_link
-  azure_private_endpoint_name = var.azure_private_endpoint_name
+  enable_private_link              = var.enable_private_link
+  azure_private_endpoint_name      = var.azure_private_endpoint_name
+  manage_private_access_settings   = var.manage_private_access_settings
 
   # Tags
   tags = var.tags
+
+  # Metastore
+  metastore = var.metastore
 }
